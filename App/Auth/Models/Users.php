@@ -55,12 +55,11 @@ class Users extends \MapDapRest\Model
     public function scopeFilterRead($query)
     {
 	$APP = \MapDapRest\App::getInstance();
-        $user = $APP->getCurrentUser();
-        if (!$user) { throw new Exception('user not found'); }
+        if (!$APP->auth->user) { throw new Exception('user not found'); }
  
-        if ($user->hasRoles([1])) return $query;
+        if ($APP->auth->user->hasRoles([1])) return $query;
 
-        return $query->where('created_by_user', '=', $user->id);
+        return $query->where('created_by_user', '=', $APP->auth->user->id);
     }
 
     //фильтр на изменение
@@ -100,7 +99,7 @@ class Users extends \MapDapRest\Model
           if (gettype($checkList)!="array") $checkList = explode(",", $checkList);
           if (count($checkList)==0) return false;
 
-          $rolesList = $this->roles();
+          $rolesList = $this->roles;
           foreach ($checkList as $v) {
              if (in_array($v, $rolesList)) return true;
           }
@@ -125,9 +124,9 @@ class Users extends \MapDapRest\Model
         "itemsPerPage"=>100,
         "itemsPerPageVariants"=>[50,100,200,300,500,1000],
 
-	"read"=>[],
-	"add"=>[],
-	"edit"=>[],
+	"read"=>$acc_all,
+	"add"=>$acc_admin,
+	"edit"=>$acc_all,
 	"delete"=>[],
 	
 	"type"=>"standart",
@@ -149,26 +148,26 @@ class Users extends \MapDapRest\Model
  			"label"=>"id",
  			"width"=>200,
  			"visible"=>true,
- 			"read"=>[],
- 			"add"=>[],
- 			"edit"=>[],
+ 			"read"=>$acc_all,
+ 			"add"=>$acc_all,
+ 			"edit"=>$acc_all,
 		],
 		"created_at"=>[
  			"type"=>"dateTime",
  			"label"=>"Дата создания",
  			"width"=>200,
- 			"read"=>[],
- 			"add"=>[],
- 			"edit"=>[],
+ 			"read"=>$acc_all,
+ 			"add"=>$acc_all,
+ 			"edit"=>$acc_all,
 		],
 		"updated_at"=>[
  			"type"=>"dateTime",
  			"label"=>"Дата изменения",
  			"width"=>200,
  			"hidden"=>true,
- 			"read"=>[],
- 			"add"=>[],
- 			"edit"=>[],
+ 			"read"=>$acc_all,
+ 			"add"=>$acc_all,
+ 			"edit"=>$acc_all,
 		],
 		"created_by_user"=>[
  			"type"=>"linkTable",
@@ -180,9 +179,9 @@ class Users extends \MapDapRest\Model
  			"object"=>false,
  			"width"=>200,
  			"hidden"=>true,
- 			"read"=>[],
- 			"add"=>[],
- 			"edit"=>[],
+ 			"read"=>$acc_all,
+ 			"add"=>$acc_all,
+ 			"edit"=>$acc_all,
 		],
 
 
@@ -195,9 +194,9 @@ class Users extends \MapDapRest\Model
  			"width"=>200,
  			"rules"=>"[ v => v.length>2 || 'Обязательное поле' ]",
  			"style"=>["prepend-icon"=>"person", "append-icon"=>"person", "type"=>"text", "outlined"=>true, "filled"=>false, "color"=>"#909090", "counter"=>true, "dark"=>false, "dense"=>false, "hide-details"=>false, "persistent-hint"=>false, "rounded"=>false, "shaped"=>false, "clearable"=>false ],
- 			"read"=>[],
- 			"add"=>[],
- 			"edit"=>[],
+ 			"read"=>$acc_all,
+ 			"add"=>$acc_all,
+ 			"edit"=>$acc_all,
 		],
 		"password"=>[
  			"type"=>"password",
@@ -205,9 +204,9 @@ class Users extends \MapDapRest\Model
  			"width"=>200,
  			"rules"=>"[ v => v.length==0 || v.length>7 || 'Минимальная длинна 8 символов' ]",
  			"defaut"=>"12345678",
- 			"read"=>[],
- 			"add"=>[],
- 			"edit"=>[],
+ 			"read"=>$acc_all,
+ 			"add"=>$acc_all,
+ 			"edit"=>$acc_all,
 		],
 		"roles"=>[
  			"type"=>"linkTable",
@@ -218,9 +217,9 @@ class Users extends \MapDapRest\Model
  			"typeSelect"=>"table",
  			"object"=>false,
  			"width"=>200,
- 			"read"=>[],
- 			"add"=>[],
- 			"edit"=>[],
+ 			"read"=>$acc_all,
+ 			"add"=>$acc_all,
+ 			"edit"=>$acc_all,
 		],
 		"status"=>[
  			"type"=>"select",
@@ -229,9 +228,9 @@ class Users extends \MapDapRest\Model
  			"items"=>["1"=>"Активный", "0"=>"Заблокирован"],
  			"defaut"=>"1",
  			"width"=>200,
- 			"read"=>[],
- 			"add"=>[],
- 			"edit"=>[],
+ 			"read"=>$acc_all,
+ 			"add"=>$acc_all,
+ 			"edit"=>$acc_all,
 		],
 		
 
@@ -243,9 +242,9 @@ class Users extends \MapDapRest\Model
  			"hint"=>"",
  			"width"=>200,
  			"rules"=>"[ v => v.length>2 || 'Обязательное поле' ]",
- 			"read"=>[],
- 			"add"=>[],
- 			"edit"=>[],
+ 			"read"=>$acc_all,
+ 			"add"=>$acc_all,
+ 			"edit"=>$acc_all,
                 ],
 		"photo"=>[
  			"type"=>"images",
@@ -254,9 +253,9 @@ class Users extends \MapDapRest\Model
  			"hint"=>"",
  			"width"=>200,
  			"rules"=>"[(files) => (files.length==0) || (!files[0].size) || (files[0] && files[0].size < 2*1024*1024) || 'Размер файла должен быть не более 2 MB']",
- 			"read"=>[],
- 			"add"=>[],
- 			"edit"=>[],
+ 			"read"=>$acc_all,
+ 			"add"=>$acc_all,
+ 			"edit"=>$acc_all,
 		],
 		"phone"=>[
  			"type"=>"string",
@@ -266,9 +265,9 @@ class Users extends \MapDapRest\Model
  			"hint"=>"",
  			"width"=>200,
  			"rules"=>"[ v => (v.length>9 && v.indexOf('_')<0) || 'Обязательное поле' ]",
- 			"read"=>[],
- 			"add"=>[],
- 			"edit"=>[],
+ 			"read"=>$acc_all,
+ 			"add"=>$acc_all,
+ 			"edit"=>$acc_all,
                 ],
 		
 	],

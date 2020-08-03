@@ -20,4 +20,4 @@ RedirectMatch 404 /vendor/
 RewriteCond %{REQUEST_FILENAME} !-l
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^(.*)$ /index.php [L,QSA]
+RewriteRule ^(.*)$ /mapdaprest/rest-service/index.php [L,QSA]

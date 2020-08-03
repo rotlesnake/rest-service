@@ -12,6 +12,7 @@
         }
     ],
     "require": {
+        "php": ">=5.4.0",
         "rotlesnake/mapdaprest": "^0.9",
         "illuminate/database": "^5.4",
         "illuminate/events": "^5.4",
