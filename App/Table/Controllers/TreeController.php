@@ -1,16 +1,9 @@
 <?php
 
-namespace App\Controllers\Api;
-
-use App\Plugins\Core\Core;
-use App\Models\System\Models;
-use App\Controllers\ApiBaseController;
-use App\Plugins\Core\HelperFieldTypes;
-use App\Plugins\Core\PhpParser;
-use App\Models\Roles;
+namespace App\Table\Controllers;
 
 
-class Tree_tableController extends ApiBaseController
+class TreeController extends \MapDapRest\Controller
 {
 
 

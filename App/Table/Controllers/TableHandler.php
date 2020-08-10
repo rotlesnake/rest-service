@@ -9,10 +9,18 @@ class TableHandler
     public $APP;
 
 
-    //******************* GET *******************************************************
-    public function get($APP, $tablename, $id, $reqFields=[], $args)
+
+    public function __construct($app)
     {
-        $this->APP = $APP;
+        $this->APP = $app;
+    }
+
+
+
+
+    //******************* GET *******************************************************
+    public function get($tablename, $id, $reqFields=[], $args)
+    {
         $user = $this->APP->auth->getFields();
 
         $json_response = [];
@@ -99,10 +107,12 @@ class TableHandler
 
 
         //фильтр по ИД
-        if ($id>0) {
+        if ($id > 0) {
             $isFiltered = true;
             $all_records = 1;
             $rows = $modelClass::select($allowFields)->filterRead()->where("id", $id)->get();
+            //Колизия - получили более одной записи, это вина (filterRead()) - выдаем ошибку, это косяк
+            if (count($rows)>1) return ["error"=>6, "message"=>"scope filterRead error"];
         }//----------------------------------------------------------------------------------
 
 
@@ -180,8 +190,9 @@ class TableHandler
     //******************* GET *******************************************************
 
 
+    
 
-    //******************* CONVERT *******************************************************
+    //******************* CONVERT FOR OUT*******************************************************
     public function rowConvert($tableInfo, $row){
             $item = [];
             $item["id"] = $row->id;
@@ -207,8 +218,38 @@ class TableHandler
             }
         return $item;
     }
-    //******************* CONVERT *******************************************************
+    //******************* CONVERT FOR OUT *******************************************************
 
+
+    
+    //******************* FILL ROW *******************************************************
+    public function fillRowParams($row, $action, $tableInfo, $params)
+    {
+        foreach ($tableInfo["columns"] as $x=>$y) {
+          if (isset($y["is_virtual"]) && $y["is_virtual"]) continue;      //Поле виртуальное
+          if (!isset($params[$x]))  continue;                             //Поле отсутствует
+          if (!$this->APP->auth->hasRoles($y[$action])) continue;         //Нет прав не заполняем поле
+          if ($y["type"]=="password" && strlen($params[$x])<4) continue;  //Пароль пустой не заполняем
+
+          //Если картики или фалы то подготавливаем массив в специальном формате
+          if ($y["type"]=="images" || $y["type"]=="files") {
+              $files = $this->prepareFileUploads($params[$x], $tableInfo["table"], $row->id, $x, $y);
+              if ($files) { $row->{$x} = $files; }
+          } else {
+              $row->{$x} = $params[$x];
+              if (is_array($params[$x])) {  $row->{$x} = \MapDapRest\Utils::arrayToString($params[$x]);  } //массив преобразуем в строку [12,32,34] -> 12,32,34
+          }
+
+          
+          if ($y["type"]=="password") { $row->{$x} = password_hash($params[$x], PASSWORD_DEFAULT); } //пароль хешируем
+          if (!empty($y["default"]) && $action=="add" && strlen($params[$x])==0) { $row->{$x} = $y["default"]; } //при добавлении поля если оно пустое то заполняем его значение по умолчанию
+          //Меняем даты в формат SQL
+          if ($y["type"]=="date")      { $row->{$x} = \MapDapRest\Utils::convDateToSQL($row->{$x}, false); }
+          if ($y["type"]=="dateTime")  { $row->{$x} = \MapDapRest\Utils::convDateToSQL($row->{$x}, true);  }
+        }
+        return $row;
+    }
+    //******************* FILL ROW *******************************************************
 
 
 
@@ -220,7 +261,7 @@ class TableHandler
 
        foreach ($files_array as $y) {
          $fname = $y;
-         $fpath = FULL_URL."uploads/$type/$table_name/".$row_id."_".$field_name."_".$y;
+         $fpath = $this->APP->FULL_URL."uploads/$type/$table_name/".$row_id."_".$field_name."_".$y;
          array_push($files, ["name"=>$fname, "url"=>$fpath]);
        }
        return $files;
@@ -228,9 +269,7 @@ class TableHandler
     //******************* GET FILES *******************************************************
 
 
-
-
-
+    
     public function prepareFileUploads($files_array, $table_name="", $row_id=0, $field_name="", $field_params=[]){
               if (!is_array($files_array)) return false;
 
@@ -239,7 +278,7 @@ class TableHandler
                 if (!isset($files_array[$i]["name"])) continue;
                 if (!isset($files_array[$i]["src"]))  continue;
 
-                $fname = Core::getSlug($files_array[$i]["name"],true);
+                $fname = \MapDapRest\Utils::getSlug($files_array[$i]["name"], true);
                 $fsrc = $files_array[$i]["src"];
                 if (strlen($fname)<2) continue;
                 if (strlen($fsrc)<8)  continue;
@@ -247,11 +286,11 @@ class TableHandler
                 array_push($files, $fname );
 
                 if ($row_id>0) {
-                   $folder_path = ROOT_PATH."uploads/".$table_name;
+                   $folder_path = $this->APP->ROOT_PATH."uploads/".$table_name;
                    if ( !is_dir($folder_path) ) { mkdir($folder_path, 0777); }
                    file_put_contents($folder_path."/".$row_id."_".$field_name."_".$fname, base64_decode($fsrc) );
 
-                   if ($field_params['type']=='Images' && isset($field_params['resize'])) {  //resize and crop image
+                   if ($field_params['type']=='images' && isset($field_params['resize'])) {  //resize and crop image
                       $file_name = $folder_path."/".$row_id."_".$field_name."_".$fname;
                       $image = initWideImage($file_name);
                       if ((int)$field_params['resize'][0]==0) $field_params['resize'][0]=null;
@@ -263,96 +302,146 @@ class TableHandler
                       $image->saveToFile($file_name);
                    }
                 }
-              }
+              }//for
               if (count($files)>0) return json_encode($files);
 
         return false;
     }
 
-    public function fillRowParams($row, $action, $tableInfo, $params)
-    {
-        foreach ($tableInfo["columns"] as $x=>$y) {
-          if (isset($y["is_virtual"]) && $y["is_virtual"]) continue;      //Поле виртуальное
-          if (!isset($params[$x]))  continue;                             //Поле отсутствует
-          if (!$this->auth->hasRoles($y["roles_edit"])) continue;         //Нет прав не заполняем поле
-          if ($y["type"]=="Password" && strlen($params[$x])<4) continue;  //Пароль пустой не заполняем
-
-          //Если картики или фалы то подготавливаем массив названий 
-          if ($y["type"]=="Images" || $y["type"]=="Files") {
-              $files = $this->prepareFileUploads($params[$x], $tableInfo["table"], $row->id, $x, $y);
-              if ($files) { $row->{$x} = $files; }
-          } else {
-              $row->{$x} = $params[$x];
-              if (is_array($params[$x])) {  $row->{$x} = Core::arrayToString($params[$x]);  } //прочий массив преобразуем в строку [12,32,34] ->  12,32,34
-          }
-
-          //пароль хешируем
-          if ($y["type"]=="Password") $row->{$x} = password_hash($params[$x], PASSWORD_DEFAULT);
-          //при добавлении поля если оно пустое то заполняем его значение по умолчанию
-          if (!empty($y["default"]) && $action=="add" && strlen($params[$x])==0) $row->{$x} = $y["default"];
-          //Меняем даты в формат SQL
-          if ($y["type"]=="Date") $row->{$x} = Core::convDateToSQL($row->{$x}, false);
-          if ($y["type"]=="Datetime") $row->{$x} = Core::convDateToSQL($row->{$x}, true);
-        }
-        return $row;
-    }
 
 
 
-    //********************* POST *********************************************************************************************************************
-    public function postTableRow($request, $response, $action, $tablename, $args)
-    {
-        $json_response = $this->add_error(0);
-        $req_params = $request->getParams();
-        $user_id = $this->auth->getUserFields()['id'];
+    
 
-        $id = 0; 
-        if (isset($req_params["id"])) { $id = (int)$req_params["id"]; }
+    //********************* ADD **************************************************************************************************
+    public function add($tablename, $args) {
+        $user = $this->APP->auth->getFields();
+        $json_response = [];
+ 
+        if ($tablename=="") return ["error"=>6, "message"=>"tablename empty"];
+        if (!isset($this->APP->models[$tablename])) return ["error"=>6, "message"=>"table $tablename not found"];
 
-        $modelClass = Core::tablenameToModel($tablename);
-        if (strlen($modelClass)==0) return "table not found";
-
+        $modelClass = $this->APP->models[$tablename];
         $tableInfo = $modelClass::modelInfo();
-        if (!$this->auth->hasRoles($tableInfo["roles_".$action]))  return json_encode($this->add_error(3)); //access denied
-        
-        //Находим строку в таблице
-        if ($action=="add")    { $row = new $modelClass(); try { $row->created_by_user = $user_id; } catch(Exception $e) {}  }
-        if ($action=="edit")   { $row = $modelClass::filterRead()->filterEdit()->where("id",$id)->first(); }
-        if ($action=="delete") { $row = $modelClass::filterRead()->filterEdit()->filterDelete()->where("id",$id)->first();   $row->delete(); return json_encode( $this->add_error(0, ["action"=>$action, "row"=>$row, "result"=>true ]) ); }
-        if (!$row) {return json_encode( $this->add_error(4) ); } //если не нашли строку то выходим
 
-        $row = $this->fillRowParams($row, $action, $tableInfo, $req_params);  //Заполняем строку данными формы
+        //если доступ на добавление отсутствует то выдаем сообщение
+        if (!$this->APP->auth->hasRoles($tableInfo["add"])) return ["error"=>4, "message"=>"table $tablename access denied"];
+       
+        //Создаем запись
+        $row = new $modelClass();
+        try { 
+           $row->created_by_user = $user["id"]; 
+        } catch(Exception $e) {
+        }
+
+        $row = $this->fillRowParams($row, "add", $tableInfo, $args);  //Заполняем строку данными из формы
 
         //Это дочерняя таблица - тогда устанавливаем родителя
-        //&_parent_table=users&_parent_id=1
-        if (isset($req_params["_parent_table"]) && (int)$req_params["_parent_id"]>0) {
-             $parent_field = "";
-             foreach ($tableInfo["parent_tables"] as $x=>$y) {
-                 if ($y["table"]==$req_params["_parent_table"]) $parent_field = $y["id"];
+        //&parentTables=["users"=>12, "posts"=>33]
+        if (isset($tableInfo["parentTables"]) && count($tableInfo["parentTables"])>0 && isset($args["parentTables"])) {
+             foreach ($tableInfo["parentTables"] as $x=>$y) {
+                $row->{$y["id"]} = (int)$args["parentTables"][$y["table"]];
              }
-
-             $row->{$parent_field} = (int)$req_params["_parent_id"];
         }
+ 
+        //Событие
+        if (method_exists($modelClass, "beforePost")) {  if ($modelClass::beforePost($row, $args)===false) { return ["error"=>4, "message"=>"break by beforePost"]; };  }
 
-        $result = $row->save();                 //Сохраняем
-        if (method_exists($modelClass, "afterPostRow")) { 
-           $modelClass::afterPostRow($row, $req_params);        //Отправляем событие 
-        }
+        $result = $row->save(); //Сохраняем запись
+        if (!$result) { return ["error"=>4, "message"=>"save error"];  }  //Если ошибка сохранения то сообщаем и выходим
+        
+        //Событие
+        if (method_exists($modelClass, "afterPost")) {  $modelClass::afterPost($row, $args);  }
 
-        if (!$result) {return json_encode( $this->add_error(4) ); }  //Если ошибка сохранения то сообщаем и выходим
 
-        if ($action=="add")   { $row = $this->fillRowParams($row, $action, $tableInfo, $req_params); } //Если добавление новой строки то еще раз обновляем данные файлов
+        $row = $this->fillRowParams($row, "add", $tableInfo, $args);  //Заполняем строку данными из формы
 
         $id = $row->id;
         $row = $modelClass::filterRead()->filterEdit()->where("id",$id)->first(); //Считываем данные из базы и отдаем клиенту
-
+        
         $item = $this->rowConvert($tableInfo, $row);
 
-        return json_encode($this->add_error(0, [
-                            "action"=>$action, 
-                            "result"=>true,
-                            "row"=>$item,
-                           ]));
+        return $item;
+
     }
+    //*****************************************************************************************************************************
+ 
+
+
+    //********************* EDIT **************************************************************************************************
+    public function edit($tablename, $id, $args) {
+        $user = $this->APP->auth->getFields();
+        $json_response = [];
+ 
+        if ($tablename=="") return ["error"=>6, "message"=>"tablename empty"];
+        if (!isset($this->APP->models[$tablename])) return ["error"=>6, "message"=>"table $tablename not found"];
+
+        $modelClass = $this->APP->models[$tablename];
+        $tableInfo = $modelClass::modelInfo();
+
+        //если доступ на добавление отсутствует то выдаем сообщение
+        if (!$this->APP->auth->hasRoles($tableInfo["add"])) return ["error"=>4, "message"=>"table $tablename access denied"];
+       
+        //Читаем запись
+        $row = $modelClass::filterRead()->filterEdit()->where("id", $id)->first();
+        if (!$row) { return ["error"=>4, "message"=>"id $id not found"]; } //если не нашли строку то выходим
+        if ($row-id != $id) { return ["error"=>4, "message"=>"id $id not found"]; } //если не нашли строку то выходим
+        
+        $row = $this->fillRowParams($row, "add", $tableInfo, $args);  //Заполняем строку данными из формы
+        
+        //Событие
+        if (method_exists($modelClass, "beforePost")) {  if ($modelClass::beforePost($row, $args)===false) { return ["error"=>4, "message"=>"break by beforePost"]; };  }
+
+        $result = $row->save(); //Сохраняем запись
+        if (!$result) { return ["error"=>4, "message"=>"save error"]; }  //Если ошибка сохранения то сообщаем и выходим
+        
+        //Событие
+        if (method_exists($modelClass, "afterPost")) {  $modelClass::afterPost($row, $args);  }
+
+        
+        $id = $row->id;
+        $row = $modelClass::filterRead()->filterEdit()->where("id",$id)->first(); //Считываем данные из базы и отдаем клиенту
+        
+        $item = $this->rowConvert($tableInfo, $row);
+
+        return $item;
+
+    }
+    //*****************************************************************************************************************************
+ 
+
+    
+    
+    //********************* DELETE **************************************************************************************************
+    public function delete($tablename, $id) {
+        $user = $this->APP->auth->getFields();
+        $json_response = [];
+ 
+        if ($tablename=="") return ["error"=>6, "message"=>"tablename empty"];
+        if (!isset($this->APP->models[$tablename])) return ["error"=>6, "message"=>"table $tablename not found"];
+
+        $modelClass = $this->APP->models[$tablename];
+        $tableInfo = $modelClass::modelInfo();
+
+        //если доступ на добавление отсутствует то выдаем сообщение
+        if (!$this->APP->auth->hasRoles($tableInfo["add"])) return ["error"=>4, "message"=>"table $tablename access denied"];
+       
+        //Читаем запись
+        $row = $modelClass::filterRead()->filterEdit()->filterDelete()->where("id",$id)->first();
+        if (!$row) { return ["error"=>4, "message"=>"id $id not found"]; } //если не нашли строку то выходим
+        if ($row-id != $id) { return ["error"=>4, "message"=>"id $id not found"]; } //если не нашли строку то выходим
+
+        $row->delete();
+        return $row;
+    }
+    //*****************************************************************************************************************************
+
+
+
+
+
+    
+
+
 
 }

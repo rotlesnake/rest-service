@@ -16,9 +16,9 @@ $APP = new MapDapRest\App(ROOT_PATH, ROOT_URL, "App", "www");
 $APP->initDB([
             'driver'    => 'mysql',
             'host'      => 'localhost',
-            'database'  => 'laravoy',
+            'database'  => 'learns',
             'username'  => 'root',
-            'password'  => '',
+            'password'  => '1234567890',
             'charset'   => 'utf8',
             'collation' => 'utf8_unicode_ci',
             'prefix'    => 'prj_',

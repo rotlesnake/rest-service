@@ -12,35 +12,73 @@ class AnyController  extends \MapDapRest\Controller
     public function __construct($app, $request, $response, $args)
     {
         $this->APP = $app;
-        //$this->APP->auth->setUser(1);
     }
 
 
-    public function anyAction($request, $response, $tablename, $id, $args)
+    public function anyAction($request, $response, $tablename, $action_id, $args)
     {
-      $id = (int)$id;
-
+ 
+      //Получение записей /table/id/asModel
       if ($request->method=="GET") {
-         $tableHandler = new TableHandler();
+         $id = (int)$action_id;
+
+         $tableHandler = new TableHandler($this->APP);
          $reqFields = [];
          if (isset($request->params["table_fields"])) $reqFields = $request->params["table_fields"];
 
-         $rows = $tableHandler->get($this->APP, $tablename, $id, $reqFields, $request->params);
-         if (count($args)>0 && $args[0]=="raw") {
-            return $rows["rows"];
+         $rows = $tableHandler->get($tablename, $id, $reqFields, $request->params);
+         if (count($args)>0) {
+            return $rows;
          }
-         return $rows;
-      }//---GET---
 
+         return $rows["rows"];
+      }//---GET-----------------------------------
+ 
 
+      //Универсальный метод   /table/action/id
       if ($request->method=="POST") {
-      }//---POST---
+         $action = $action_id;
+         $id = $args[0];
+         $rows = [];
 
+         $tableHandler = new TableHandler($this->APP);
+         
+         if ($action=="add")    $rows = $tableHandler->add($tablename, $request->params);
+         if ($action=="edit")   $rows = $tableHandler->edit($tablename, $id, $request->params);
+         if ($action=="delete") $rows = $tableHandler->delete($tablename, $id);
+         
+         return $rows;
+      }//---POST-----------------------------------
+
+
+      //Добавление/Изменение записей  /table/id
       if ($request->method=="PUT") {
-      }//---PUT---
+         $id = $action_id;
+         $rows = [];
 
+         $tableHandler = new TableHandler($this->APP);
+         
+         if ($id==0) {
+            $rows = $tableHandler->add($tablename, $request->params);
+         } else {
+            $rows = $tableHandler->edit($tablename, $id, $request->params);
+         }
+
+         return $rows;
+      }//---PUT-----------------------------------
+
+
+      //Удаление записей
       if ($request->method=="DELETE") {
-      }//---DELETE---
+         $id = $args[0];
+         $rows = [];
+
+         $tableHandler = new TableHandler($this->APP);
+        
+         $rows = $tableHandler->delete($tablename, $id);
+         
+         return $rows;
+      }//---DELETE-----------------------------------
 
     }//Action
 
