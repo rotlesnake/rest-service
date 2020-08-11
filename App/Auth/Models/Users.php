@@ -40,11 +40,11 @@ class Users extends \MapDapRest\Model
 
     //Перехват post данных
     //Перед сохранением
-    public static function beforePost($model, $post) {
+    public static function beforePost($action, $model, $post) {
     }
 
     //После сохранения
-    public static function afterPost($model, $post) {
+    public static function afterPost($action, $model, $post) {
     }
     //--------------------------------
 

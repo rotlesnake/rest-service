@@ -77,19 +77,22 @@ class TableHandler
         $isFiltered = false;
         //Запрашивают фильтр записей по полям
         //table_filter:[ {field:name, oper:'like', value:'asd'} ]
-        if (isset($args["table_filter"])) {
+        if (isset($args["table_filter"]) && count($args["table_filter"])>0) {
+
+            $MODEL = $modelClass::select($allowFields)->filterRead();
+
             foreach ($args["table_filter"] as $x=>$y) { //перебираем поля 
-                if (isset($args["table_filter"][$x]["value"]) && strlen($args["table_filter"][$x]["value"])>0) {  //поле есть - формируем фильтр
+                if (isset($args["table_filter"][$x]["value"])) {  //поле есть - формируем фильтр
                     $isFiltered = true;
                     $s_filed=$args["table_filter"][$x]["field"]; $s_oper=$args["table_filter"][$x]["oper"]; $s_value=$args["table_filter"][$x]["value"];
 
-                    if ($tableInfo["columns"][$s_filed]["type"]=="Date")     { $s_value = \MapDapRest\Utils::convDateToSQL($s_value, false); }
-                    if ($tableInfo["columns"][$s_filed]["type"]=="Datetime") { $s_value = \MapDapRest\Utils::convDateToSQL($s_value, true); }
+                    if ($tableInfo["columns"][$s_filed]["type"]=="date")     { $s_value = \MapDapRest\Utils::convDateToSQL($s_value, false); }
+                    if ($tableInfo["columns"][$s_filed]["type"]=="dateTime") { $s_value = \MapDapRest\Utils::convDateToSQL($s_value, true); }
                     if ($s_oper=="like")   { $s_value = "%".$s_value."%"; }
                     if ($s_oper=="begins") { $s_oper="like"; $s_value = $s_value."%"; }
-
-                    if ($MODEL==null) {
-                       $MODEL = $modelClass::select($allowFields)->filterRead()->where($s_filed, $s_oper, $s_value);
+                    
+                    if ($s_oper=="in") {
+                       $MODEL = $MODEL->whereIn($s_filed, $s_value);
                     } else {
                        $MODEL = $MODEL->where($s_filed, $s_oper, $s_value);
                     }
@@ -345,13 +348,13 @@ class TableHandler
         }
  
         //Событие
-        if (method_exists($modelClass, "beforePost")) {  if ($modelClass::beforePost($row, $args)===false) { return ["error"=>4, "message"=>"break by beforePost"]; };  }
+        if (method_exists($modelClass, "beforePost")) {  if ($modelClass::beforePost("add", $row, $args)===false) { return ["error"=>4, "message"=>"break by beforePost"]; };  }
 
         $result = $row->save(); //Сохраняем запись
         if (!$result) { return ["error"=>4, "message"=>"save error"];  }  //Если ошибка сохранения то сообщаем и выходим
         
         //Событие
-        if (method_exists($modelClass, "afterPost")) {  $modelClass::afterPost($row, $args);  }
+        if (method_exists($modelClass, "afterPost")) {  $modelClass::afterPost("add", $row, $args);  }
 
 
         $row = $this->fillRowParams($row, "add", $tableInfo, $args);  //Заполняем строку данными из формы
@@ -379,24 +382,24 @@ class TableHandler
         $modelClass = $this->APP->models[$tablename];
         $tableInfo = $modelClass::modelInfo();
 
-        //если доступ на добавление отсутствует то выдаем сообщение
-        if (!$this->APP->auth->hasRoles($tableInfo["add"])) return ["error"=>4, "message"=>"table $tablename access denied"];
+        //если доступ на изменение отсутствует то выдаем сообщение
+        if (!$this->APP->auth->hasRoles($tableInfo["edit"])) return ["error"=>4, "message"=>"table $tablename access denied"];
        
         //Читаем запись
         $row = $modelClass::filterRead()->filterEdit()->where("id", $id)->first();
         if (!$row) { return ["error"=>4, "message"=>"id $id not found"]; } //если не нашли строку то выходим
-        if ($row-id != $id) { return ["error"=>4, "message"=>"id $id not found"]; } //если не нашли строку то выходим
+        if ($row->id != $id) { return ["error"=>4, "message"=>"id $id not found"]; } //если не нашли строку то выходим
         
-        $row = $this->fillRowParams($row, "add", $tableInfo, $args);  //Заполняем строку данными из формы
+        $row = $this->fillRowParams($row, "edit", $tableInfo, $args);  //Заполняем строку данными из формы
         
         //Событие
-        if (method_exists($modelClass, "beforePost")) {  if ($modelClass::beforePost($row, $args)===false) { return ["error"=>4, "message"=>"break by beforePost"]; };  }
+        if (method_exists($modelClass, "beforePost")) {  if ($modelClass::beforePost("edit", $row, $args)===false) { return ["error"=>4, "message"=>"break by beforePost"]; };  }
 
         $result = $row->save(); //Сохраняем запись
         if (!$result) { return ["error"=>4, "message"=>"save error"]; }  //Если ошибка сохранения то сообщаем и выходим
         
         //Событие
-        if (method_exists($modelClass, "afterPost")) {  $modelClass::afterPost($row, $args);  }
+        if (method_exists($modelClass, "afterPost")) {  $modelClass::afterPost("edit", $row, $args);  }
 
         
         $id = $row->id;
@@ -424,14 +427,22 @@ class TableHandler
         $tableInfo = $modelClass::modelInfo();
 
         //если доступ на добавление отсутствует то выдаем сообщение
-        if (!$this->APP->auth->hasRoles($tableInfo["add"])) return ["error"=>4, "message"=>"table $tablename access denied"];
+        if (!$this->APP->auth->hasRoles($tableInfo["delete"])) return ["error"=>4, "message"=>"table $tablename access denied"];
        
         //Читаем запись
         $row = $modelClass::filterRead()->filterEdit()->filterDelete()->where("id",$id)->first();
         if (!$row) { return ["error"=>4, "message"=>"id $id not found"]; } //если не нашли строку то выходим
-        if ($row-id != $id) { return ["error"=>4, "message"=>"id $id not found"]; } //если не нашли строку то выходим
+        if ($row->id != $id) { return ["error"=>4, "message"=>"id $id not found"]; } //если не нашли строку то выходим
+
+        
+        //Событие
+        if (method_exists($modelClass, "beforePost")) {  if ($modelClass::beforePost("delete", $row, [])===false) { return ["error"=>4, "message"=>"break by beforePost"]; };  }
 
         $row->delete();
+        
+        //Событие
+        if (method_exists($modelClass, "afterPost")) {  $modelClass::afterPost("delete", $row, []);  }
+
         return $row;
     }
     //*****************************************************************************************************************************

@@ -6,21 +6,13 @@ namespace App\Table\Controllers;
 class AnyController  extends \MapDapRest\Controller
 {
 
-    public $APP;
 
-
-    public function __construct($app, $request, $response, $args)
-    {
-        $this->APP = $app;
-    }
-
-
-    public function anyAction($request, $response, $tablename, $action_id, $args)
+    public function anyAction($request, $response, $tablename, $action_or_id, $args)
     {
  
       //Получение записей /table/id/asModel
       if ($request->method=="GET") {
-         $id = (int)$action_id;
+         $id = (int)$action_or_id;
 
          $tableHandler = new TableHandler($this->APP);
          $reqFields = [];
@@ -37,7 +29,7 @@ class AnyController  extends \MapDapRest\Controller
 
       //Универсальный метод   /table/action/id
       if ($request->method=="POST") {
-         $action = $action_id;
+         $action = $action_or_id;
          $id = $args[0];
          $rows = [];
 
@@ -53,7 +45,7 @@ class AnyController  extends \MapDapRest\Controller
 
       //Добавление/Изменение записей  /table/id
       if ($request->method=="PUT") {
-         $id = $action_id;
+         $id = $action_or_id;
          $rows = [];
 
          $tableHandler = new TableHandler($this->APP);

@@ -7,27 +7,26 @@ class TreeController extends \MapDapRest\Controller
 {
 
 
-    public function anyAction($request, $response, $action, $args)
+    public function anyAction($request, $response, $tablename, $args)
     {
-       $json_response = $this->add_error(0);
-       $req_params = $request->getParams();
-       $user = $this->auth->getUserFields();
-       $json_response["items"] = [];
+       $json_response = [];
+ 
+        if ($tablename=="") return ["error"=>6, "message"=>"tablename empty"];
+        if (!isset($this->APP->models[$tablename])) return ["error"=>6, "message"=>"table $tablename not found"];
+        
+        $modelClass = $this->APP->models[$tablename];
 
-       $model = Core::tablenameToModel($args[0]);
-       $tableInfo = $model::modelInfo();
 
-       if ($action=="get") { 
-          $json_response["items"] = $this->getTreeTable($model, 0);
+        if ($request->method=="GET") {
+           $json_response = $this->getTreeTable($modelClass, 0);
+           return $json_response;
+        }
 
-          return json_encode($json_response);
-       }
-       if ($action=="set") { 
-        $this->setTreeTable($model, $req_params);
-        $json_response["items"] = $this->getTreeTable($model, 0);
-
-          return json_encode($json_response);
-       }
+        if ($request->method=="POST") {
+           $this->setTreeTable($modelClass, $args);
+           $json_response = $this->getTreeTable($model, 0);
+           return $json_response;
+        }
     }
 
 
@@ -39,10 +38,9 @@ class TreeController extends \MapDapRest\Controller
              $item_tree["server_id"] = $item->id;
              $item_tree["id"] = $item->id;
              $item_tree["pid"] = (int)$item->parent_id;
-             $item_tree["addTreeNodeDisabled"] = true;
              $item_tree["open"] = true;
              $item_tree["name"] = $item->name;
-             $item_tree["children"] = $this->getTreeTable($model, $item->id);
+             $item_tree["childrens"] = $this->getTreeTable($model, $item->id);
 
              array_push($json_response, $item_tree);
         }
@@ -66,8 +64,8 @@ class TreeController extends \MapDapRest\Controller
              $row->sort = $sort;
              $row->save();
 
-             if (isset($item["children"]) && count($item["children"])>0 ) {
-                 $sort = $this->setTreeTable($model, $item["children"], $row->id, $sort);
+             if (isset($item["childrens"]) && count($item["childrens"])>0 ) {
+                 $sort = $this->setTreeTable($model, $item["childrens"], $row->id, $sort);
              }
         }
         return $sort;
