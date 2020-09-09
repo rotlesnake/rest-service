@@ -10,7 +10,7 @@ define("FULL_URL", $_SERVER["REQUEST_SCHEME"]."://".$_SERVER["SERVER_NAME"].ROOT
 require VENDOR_PATH."autoload.php";
 
 
-$APP = new MapDapRest\App(ROOT_PATH, ROOT_URL, "App", "www");
+$APP = new MapDapRest\App(ROOT_PATH, ROOT_URL, "backend", "frontend");
 
 
 $APP->initDB([
@@ -18,7 +18,7 @@ $APP->initDB([
             'host'      => 'localhost',
             'database'  => 'learns',
             'username'  => 'root',
-            'password'  => '1234567890',
+            'password'  => '',
             'charset'   => 'utf8',
             'collation' => 'utf8_unicode_ci',
             'prefix'    => 'prj_',
