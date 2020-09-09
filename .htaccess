@@ -8,12 +8,13 @@ Options All -Indexes
 
 RewriteEngine On
 
-RewriteCond %{REQUEST_URI} /www/
+RewriteCond %{REQUEST_URI} /frontend/
 RewriteRule ^(.*)$ $1 [L,QSA]
 
 
 RedirectMatch 404 /composer.json
-RedirectMatch 404 /App/
+RedirectMatch 404 /backend/
+RedirectMatch 404 /uploads/
 RedirectMatch 404 /vendor/
 
 

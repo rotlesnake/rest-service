@@ -76,15 +76,15 @@ class TableHandler
 
         $isFiltered = false;
         //Запрашивают фильтр записей по полям
-        //table_filter:[ {field:name, oper:'like', value:'asd'} ]
-        if (isset($args["table_filter"]) && count($args["table_filter"])>0) {
+        //filter:[ {field:name, oper:'like', value:'asd'} ]
+        if (isset($args["filter"]) && count($args["filter"])>0) {
 
             $MODEL = $modelClass::select($allowFields)->filterRead();
 
-            foreach ($args["table_filter"] as $x=>$y) { //перебираем поля 
-                if (isset($args["table_filter"][$x]["value"])) {  //поле есть - формируем фильтр
+            foreach ($args["filter"] as $x=>$y) { //перебираем поля 
+                if (isset($args["filter"][$x]["value"])) {  //поле есть - формируем фильтр
                     $isFiltered = true;
-                    $s_filed=$args["table_filter"][$x]["field"]; $s_oper=$args["table_filter"][$x]["oper"]; $s_value=$args["table_filter"][$x]["value"];
+                    $s_filed=$args["filter"][$x]["field"]; $s_oper=$args["filter"][$x]["oper"]; $s_value=$args["filter"][$x]["value"];
 
                     if ($tableInfo["columns"][$s_filed]["type"]=="date")     { $s_value = \MapDapRest\Utils::convDateToSQL($s_value, false); }
                     if ($tableInfo["columns"][$s_filed]["type"]=="dateTime") { $s_value = \MapDapRest\Utils::convDateToSQL($s_value, true); }
@@ -146,7 +146,7 @@ class TableHandler
 
         //Проходим по колонкам, убираем лишние поля
         foreach ($json_response['info']["columns"] as $x=>$y) {
-            if (count($reqFields)>0 && $x!="id" && !in_array($x, $reqFields)) { unset($json_response['info']["columns"][$x]); continue; } //Оставляем только те поля которые запросили
+            if (!in_array($x, $allowFields)) { unset($json_response['info']["columns"][$x]); continue; } //Оставляем только те поля которые запросили и разрешены к просмотру
             if (!$this->APP->auth->hasRoles($y["read"])) { unset($json_response['info']["columns"][$x]); continue; } //Если чтение запрещено то удаляем поле
             if (!$this->APP->auth->hasRoles($y["edit"])) { $json_response['info']["columns"][$x]["protected"]=true; continue; } //Если редактирование запрещено то делаем отметку о защищенном поле
         }
@@ -166,7 +166,7 @@ class TableHandler
         $need_footer = false;
         $footer_row = [];
         foreach ($rows as $row) {
-            $item = $this->rowConvert($tableInfo, $row); //Форматируем поля для вывода клиенту
+            $item = $this->rowConvert($json_response['info'], $row); //Форматируем поля для вывода клиенту
             array_push($json_response['rows'], $item);
 
             //Если для этого поля требуется агрегатная функция в итогах то вычисляем.

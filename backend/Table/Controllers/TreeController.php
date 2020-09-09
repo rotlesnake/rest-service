@@ -12,9 +12,9 @@ class TreeController extends \MapDapRest\Controller
        $json_response = [];
  
         if ($tablename=="") return ["error"=>6, "message"=>"tablename empty"];
-        if (!isset($this->APP->models[$tablename])) return ["error"=>6, "message"=>"table $tablename not found"];
+        if (!$this->APP->hasModel($tablename)) return ["error"=>6, "message"=>"table $tablename not found"];
         
-        $modelClass = $this->APP->models[$tablename];
+        $modelClass = $this->APP->getModel($tablename);
 
 
         if ($request->method=="GET") {

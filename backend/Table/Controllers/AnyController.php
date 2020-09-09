@@ -10,24 +10,24 @@ class AnyController  extends \MapDapRest\Controller
     public function anyAction($request, $response, $tablename, $action_or_id, $args)
     {
  
-      //Получение записей /table/id/asModel
+      //
       if ($request->method=="GET") {
          $id = (int)$action_or_id;
 
          $tableHandler = new TableHandler($this->APP);
          $reqFields = [];
-         if (isset($request->params["table_fields"])) $reqFields = $request->params["table_fields"];
+         if (isset($request->params["fields"])) $reqFields = $request->params["fields"];
 
          $rows = $tableHandler->get($tablename, $id, $reqFields, $request->params);
          if (count($args)>0) {
             return $rows;
          }
 
-         return $rows["rows"];
+         return isset($rows["rows"]) ? $rows["rows"] : $rows;
       }//---GET-----------------------------------
  
 
-      //Универсальный метод   /table/action/id
+      //
       if ($request->method=="POST") {
          $action = $action_or_id;
          $id = $args[0];
@@ -43,7 +43,7 @@ class AnyController  extends \MapDapRest\Controller
       }//---POST-----------------------------------
 
 
-      //Добавление/Изменение записей  /table/id
+      //
       if ($request->method=="PUT") {
          $id = $action_or_id;
          $rows = [];
@@ -60,7 +60,7 @@ class AnyController  extends \MapDapRest\Controller
       }//---PUT-----------------------------------
 
 
-      //Удаление записей
+      //
       if ($request->method=="DELETE") {
          $id = $args[0];
          $rows = [];
