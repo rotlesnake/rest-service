@@ -22,7 +22,7 @@ class LoginController extends \MapDapRest\Controller
 
     public function indexAction($request, $response, $params) {
  
-       return $this->APP->auth->getFields(["id","token"]);
+       return ["user"=>$this->APP->auth->getFields()];
     }
 
 }
