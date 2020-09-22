@@ -109,7 +109,7 @@ class User_posts extends \MapDapRest\Model
 	"delete"=>[],
 	
 	"type"=>"standart",
-        //"parentTables"=>[["table"=>"user", "id"=>"user_id"]],
+        "parentTables"=>[["table"=>"users", "id"=>"user_id"]],
         //"childrenTables"=>[["table"=>"user_posts", "id"=>"user_id"]],
 
         "filter"=>[

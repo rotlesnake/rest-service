@@ -16,7 +16,7 @@ $APP = new MapDapRest\App(ROOT_PATH, ROOT_URL, "backend", "frontend");
 $APP->initDB([
             'driver'    => 'mysql',
             'host'      => 'localhost',
-            'database'  => 'learns',
+            'database'  => 'test',
             'username'  => 'root',
             'password'  => '',
             'charset'   => 'utf8',
