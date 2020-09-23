@@ -25,5 +25,4 @@ ini_set('date.timezone', $settings['timezone']);
 date_default_timezone_set($settings['timezone']);
 
 
-//echo \MapDapRest\Migrate::migrate();
 $APP->run(["GET", "POST", "PUT", "DELETE"]);

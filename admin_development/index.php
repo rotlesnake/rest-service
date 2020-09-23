@@ -1,6 +1,7 @@
 <?php
 define("ROOT_PATH",   str_replace("/", DIRECTORY_SEPARATOR, realpath(__DIR__)."/") );
 define("APP_PATH",    str_replace("/", DIRECTORY_SEPARATOR, realpath(__DIR__)."/backend/") );
+define("ROOT_APP_PATH", str_replace("/", DIRECTORY_SEPARATOR, realpath(__DIR__."/../")."/backend/") );
 define("VENDOR_PATH", str_replace("/", DIRECTORY_SEPARATOR, realpath(__DIR__."/../")."/vendor/") );
 
 $ROOT_URL = str_replace("//", "/", dirname($_SERVER["SCRIPT_NAME"])."/");
