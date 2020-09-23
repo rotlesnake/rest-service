@@ -14,10 +14,10 @@ RewriteRule ^(.*)$ $1 [L,QSA]
 
 RedirectMatch 404 /composer.json
 RedirectMatch 404 /backend/
-#RedirectMatch 404 /uploads/
 RedirectMatch 404 /vendor/
 
 
+RewriteCond %{REQUEST_URI} /uploads/
 RewriteCond %{REQUEST_FILENAME} !-l
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
