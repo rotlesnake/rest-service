@@ -16,8 +16,9 @@ RedirectMatch 404 /composer.json
 RedirectMatch 404 /backend/
 RedirectMatch 404 /vendor/
 
-
 RewriteCond %{REQUEST_URI} /uploads/
+RewriteRule ^(.*)$ index.php [L,QSA]
+
 RewriteCond %{REQUEST_FILENAME} !-l
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
