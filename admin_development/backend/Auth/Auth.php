@@ -3,7 +3,9 @@ namespace AdminDev\Auth;
 
 use \MapDapRest\App;
 
-class EmptyClass {}
+class EmptyClass {
+  public $login = 'Админ настройки системы';
+}
 
 class Auth 
 {

@@ -19,10 +19,16 @@ class LoginController extends \MapDapRest\Controller
     }
 
 
-
+   /** @GET() <br>@POST(login, password) **/
     public function indexAction($request, $response, $params) {
- 
        return ["user"=>$this->APP->auth->getFields()];
+    }
+
+
+
+   /** @POST(login, password, email) **/
+    public function registerAction($request, $response, $params) {
+       
     }
 
 }
