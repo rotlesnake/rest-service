@@ -65,12 +65,13 @@ class ModelsController extends \MapDapRest\Controller
 
 
     /** @POST(module:'название модуля', model:'название модели') **/
-    public function addAction($request, $response, $params) {
+    public function addModelAction($request, $response, $params) {
        $module = ucfirst($request->getParam("module"));
-       $table = strtolower($request->getParam("model"));
-       $table = \MapDapRest\Utils::getSlug($table);
+       $table = \MapDapRest\Utils::getSlug($request->getParam("model"));
        $model = ucfirst($table);
        $label = $request->getParam("label");
+
+       if ($this->APP->hasModel($table)) return ["error"=>1, "message"=>"exists"];
 
        $txt = file_get_contents(APP_PATH."Database/stub/model.stub");
        $txt = str_replace("<MODULE>",  $module, $txt);
@@ -80,7 +81,7 @@ class ModelsController extends \MapDapRest\Controller
        $txt = str_replace("<TABLE_LABEL>",  $label, $txt);
        file_put_contents(ROOT_APP_PATH.$module."/Models/".$model.".php", $txt);
 
-       return [];
+       return ["error"=>0, "message"=>""];
     }
 
 

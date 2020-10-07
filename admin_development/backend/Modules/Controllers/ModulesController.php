@@ -66,7 +66,8 @@ class ModulesController extends \MapDapRest\Controller
 
     /** @POST(name) **/
     public function createModuleAction($request, $response, $params) {
-       $name = ucfirst($request->getParam("name"));
+       $name = \MapDapRest\Utils::getSlug( $request->getParam("name"), false, true );
+       $name = ucfirst($name);
        $dir = ROOT_APP_PATH."/".$name;
 
        mkdir($dir, 0777);
@@ -80,7 +81,8 @@ class ModulesController extends \MapDapRest\Controller
     /** @POST(module:'название модуля', name:'название контроллера') **/
     public function createControllerAction($request, $response, $params) {
        $module = ucfirst($request->getParam("module"));
-       $name = ucfirst($request->getParam("name"));
+       $name = \MapDapRest\Utils::getSlug( $request->getParam("name"), false, true );
+       $name = ucfirst($name);
 
        $txt = file_get_contents(APP_PATH."Modules/stub/controller.stub");
        $txt = str_replace("<MODULE>",  $module, $txt);
@@ -88,6 +90,33 @@ class ModulesController extends \MapDapRest\Controller
        file_put_contents(ROOT_APP_PATH.$module."/Controllers/".$name."Controller.php", $txt);
 
        return [];
+    }
+
+
+
+    /** Добавление метода в контроллер <br>@POST(module:'название модуля', controller:'название контроллера', name:'название метода', type:'тип метода') **/
+    public function createMethodAction($request, $response, $params) {
+       $module = ucfirst($request->getParam("module"));
+       $controller = ucfirst($request->getParam("controller"));
+       $method = lcfirst($request->getParam("name"));
+       $method = \MapDapRest\Utils::getSlug( $method, false, true );
+       $type = $request->getParam("type");
+
+       $method_text = file_get_contents(APP_PATH."Modules/stub/".$type.".method");
+       $method_text = str_replace("<METHOD_NAME>",  $method, $method_text);
+
+       $file_controller = ROOT_APP_PATH.$module."/Controllers/".$controller."Controller.php";
+
+       $file = file($file_controller);
+       $file_len = count($file);
+       while (true) {
+          $file_len--;
+          if ( strpos( $file[$file_len], "}") !== false) { break; }
+       }
+       $file[$file_len - 1] .= "\r\n".$method_text."\r\n\r\n";
+       file_put_contents($file_controller, $file);
+
+       return ["error"=>0];
     }
 
 

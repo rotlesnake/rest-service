@@ -1,0 +1,13 @@
+
+    /** чтение таблицы (с обработкой) <br>@POST(table_name) **/
+    public function <METHOD_NAME>Action($request, $response, $params) {
+       $user = $this->APP->auth->getFields();
+       $table_name = $request->getParam("table_name");
+
+       $rows = $this->APP->DB::table($table_name)->get();
+       foreach ($rows as $key=>$row) {
+           $rows[$key]["name"] = $row["name"];
+       }
+
+       return ["rows"=>$rows];
+    }

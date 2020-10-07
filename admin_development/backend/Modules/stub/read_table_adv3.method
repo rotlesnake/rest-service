@@ -1,0 +1,17 @@
+
+    /** чтение таблицы (с группировкой) <br>@POST(table_name) **/
+    public function <METHOD_NAME>Action($request, $response, $params) {
+       $user = $this->APP->auth->getFields();
+       $table_name = $request->getParam("table_name");
+
+       $rows = $this->APP->DB::table("users")->where("user.active","=",1)->
+                               join('user_posts', 'user_posts.user_id', '=', 'users.id')->where("user_posts.published","=",1)->
+                               select($DB::raw("users.department, count(*) as cnt"))->
+                               groupBy('users.department')->get();
+
+       foreach ($rows as $key=>$row) {
+           $rows[$key]["name"] = $row["name"];
+       }
+
+       return ["rows"=>$rows];
+    }

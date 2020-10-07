@@ -1,0 +1,10 @@
+
+    /** чтение таблицы (простой вариант) <br>@POST(table_name) **/
+    public function <METHOD_NAME>Action($request, $response, $params) {
+       $user = $this->APP->auth->getFields();
+       $table_name = $request->getParam("table_name");
+
+       $rows = $this->APP->DB::table($table_name)->where("id","=",12)->get();
+
+       return ["rows"=>$rows];
+    }

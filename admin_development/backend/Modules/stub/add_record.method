@@ -1,0 +1,14 @@
+
+    /** Добавить запись <br>@POST(table_name, fields) **/
+    public function <METHOD_NAME>Action($request, $response, $params) {
+       $user = $this->APP->auth->getFields();
+       $table_name = $request->getParam("table_name");
+
+       $table_model = $this->APP->getModel($table_name);
+
+       $row = new $table_model();
+       $row->name = "test";
+       $row->save();
+
+       return ["error"=>0];
+    }
