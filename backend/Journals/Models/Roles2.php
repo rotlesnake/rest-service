@@ -2,9 +2,9 @@
 namespace App\Journals\Models;
 
 
-class Roles extends \MapDapRest\Model
+class Roles2 extends \MapDapRest\Model
 {
-    protected $table = 'roles';
+    protected $table = 'roles2';
     protected $primaryKey = 'id';
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
@@ -30,10 +30,10 @@ class Roles extends \MapDapRest\Model
 
     public static function modelInfo() {
       $acc_admin = [1];
-      $acc_all = [1,2,3,4,5,6,7,8];
+      $acc_all = \MapDapRest\Utils::getAllRoles();
       
       return [
-	"table"=>"roles",
+	"table"=>"roles2",
 	"primary_key"=>"id",
 	"category"=>"Система",
 	"name"=>"Роли",

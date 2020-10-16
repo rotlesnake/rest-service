@@ -90,7 +90,7 @@ class User_posts extends \MapDapRest\Model
 
     public static function modelInfo() {
       $acc_admin = [1];
-      $acc_all = [1,2,3,4,5,6,7,8];
+      $acc_all = \MapDapRest\Utils::getAllRoles();
       
       return [
 	"table"=>"user_posts",

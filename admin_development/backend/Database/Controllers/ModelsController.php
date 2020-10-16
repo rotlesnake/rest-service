@@ -11,7 +11,7 @@ class ModelsController extends \MapDapRest\Controller
        $columns = [];
        $rows = [];
        array_push($columns, ["text"=>"Модуль", "value"=>"module", "width"=>150]);
-       array_push($columns, ["text"=>"Модель", "value"=>"model",  "width"=>180]);
+       array_push($columns, ["text"=>"Модель", "value"=>"model",  "width"=>200]);
        array_push($columns, ["text"=>"Наименование", "value"=>"name"]);
 
        $modules = $this->getModulesList();
@@ -64,7 +64,7 @@ class ModelsController extends \MapDapRest\Controller
 
 
 
-    /** @POST(module:'название модуля', model:'название модели') **/
+    /** Добавление новой таблицы и модели @POST(module:'название модуля', model:'название модели') **/
     public function addModelAction($request, $response, $params) {
        $module = ucfirst($request->getParam("module"));
        $table = \MapDapRest\Utils::getSlug($request->getParam("model"));

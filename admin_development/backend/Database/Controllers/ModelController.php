@@ -13,7 +13,10 @@ class ModelController extends \MapDapRest\Controller
        $file = ROOT_APP_PATH.$module."/Models/".$model.".php";
        $class = "App\\".$module."\\Models\\".$model;
 
-       return $class::modelInfo();
+       return ["model" => $class::modelInfo() , 
+               "roles" => \MapDapRest\Utils::getAllRoles(false),
+               "column_types" => \MapDapRest\Utils::getAllColumnTypes(),
+              ];
     }
 
 
