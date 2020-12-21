@@ -11,6 +11,10 @@ RewriteEngine On
 RewriteCond %{REQUEST_URI} /frontend/
 RewriteRule ^(.*)$ $1 [L,QSA]
 
+RewriteCond %{REQUEST_URI} /admin_development/
+RewriteRule ^(.*)$ $1 [L,QSA]
+
+
 
 RedirectMatch 404 /composer.json
 RedirectMatch 404 /backend/
