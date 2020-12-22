@@ -24,5 +24,6 @@ $APP->setAuth( new \App\Auth\Auth() );
 ini_set('date.timezone', $settings['timezone']);
 date_default_timezone_set($settings['timezone']);
 
+//$result = \MapDapRest\Migrate::migrate();
 
 $APP->run(["GET", "POST", "PUT", "DELETE"]);
