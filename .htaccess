@@ -8,16 +8,14 @@ Options All -Indexes
 
 RewriteEngine On
 
-RewriteCond %{REQUEST_URI} /frontend/
+RewriteCond %{REQUEST_URI} /www/
+RewriteRule ^(.*)$ $1 [L,QSA]
+RewriteCond %{REQUEST_URI} /www_admin/
 RewriteRule ^(.*)$ $1 [L,QSA]
 
-RewriteCond %{REQUEST_URI} /admin_development/
-RewriteRule ^(.*)$ $1 [L,QSA]
 
-
-
-RedirectMatch 404 /composer.json
-RedirectMatch 404 /backend/
+RedirectMatch 404 /composer
+RedirectMatch 404 /App/
 RedirectMatch 404 /vendor/
 
 RewriteCond %{REQUEST_URI} /uploads/

@@ -1,0 +1,24 @@
+<?php
+namespace App\<MODULE>\Controllers;
+
+
+class <NAME>Controller extends \MapDapRest\Controller
+{
+
+    /**  **/
+    public function indexAction($request, $response, $params) {
+       $user = $this->APP->auth->getFields();
+       $client = $this->APP->DB->table('users')->find(1);
+
+       return [];
+    }
+
+
+    /**  **/
+    public function anyAction($request, $response, $controller, $action, $params) {
+
+       return [];
+    }
+
+
+}//class
