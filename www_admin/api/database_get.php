@@ -32,7 +32,8 @@ $response = new \MapDapRest\Response();
          $name = ucfirst(basename($file,".php"));
          $class = "\\App\\$folder\\Models\\".$name;
          $info = $class::modelInfo();
-         array_push($rez, $info );
+         //array_push($rez[$name], $info );
+         $rez[$name] = $info;
       }
       return $rez;
     }
@@ -43,17 +44,19 @@ $response = new \MapDapRest\Response();
        $rows = [];
        array_push($columns, ["text"=>"Модуль", "value"=>"module", "width"=>150]);
        array_push($columns, ["text"=>"Модель", "value"=>"model",  "width"=>200]);
+       array_push($columns, ["text"=>"Таблица", "value"=>"table",  "width"=>200]);
        array_push($columns, ["text"=>"Наименование", "value"=>"name"]);
 
        $modules = getModulesList();
        foreach ($modules as $k=>$v) {
           $models = getModelsList($v);
-          if (count($models)==0) $rows[] = ["module"=>$v,"model"=>"","name"=>""];
+          if (count($models)==0) $rows[] = ["module"=>$v,"model"=>"","table"=>"","name"=>""];
 
           foreach ($models as $kk=>$vv) {
              $rows[] = [
                 "module"=>$v,
-                "model"=>$vv['table'],
+                "model"=>$kk,
+                "table"=>$vv['table'],
                 "name"=>$vv['name'],
              ];
           }

@@ -26,6 +26,9 @@ template:`
 	migrateResult: '',
     }},
 
+    mounted(){
+    },
+
     methods: {
 	doMigrate(){
 		this.isLoading = true;

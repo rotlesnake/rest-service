@@ -95,7 +95,8 @@ template:`
     },
     props:{
         module:String,
-        model:String
+        model:String,
+        table:String,
     },
     data() {
         return {
@@ -112,7 +113,7 @@ template:`
 	
     mounted(){
             this.loader(true);
-            axios({method:"POST", url:"api/database_model_info.php", data:{module:this.module, model:this.model} }).then(response=>{
+            axios({method:"POST", url:"api/database_model_info.php", data:{module:this.module, model:this.model, table:this.table} }).then(response=>{
                 this.loader(false);
                 this.modelInfo = response.data.model;
                 this.rolesList = response.data.roles;
@@ -170,7 +171,7 @@ template:`
             if (!this.form_valid) return;
 
             this.loader(true);
-            axios({method:"POST", url:"api/database_model_edit.php", data:{module:this.module, model:this.model, info:this.modelInfo} }).then(response=>{
+            axios({method:"POST", url:"api/database_model_edit.php", data:{module:this.module, model:this.model, table:this.table, info:this.modelInfo} }).then(response=>{
                 this.loader(false);
                 if (response.data.error>0) {
                     return;

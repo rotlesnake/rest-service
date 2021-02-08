@@ -54,7 +54,7 @@ template:`
 
 
     <!-- dialog !-->
-    <component :is="dialog" v-model="modules"  :module="editModule" :model="editModel" @close="dialog=null; reloadTable();"></component>
+    <component :is="dialog" v-model="modules"  :module="editModule" :model="editModel" :table="editTable" @close="dialog=null; reloadTable();"></component>
 
 
 </div>
@@ -69,7 +69,8 @@ template:`
             dialog:null,
             modules:[],
             editModule:'',
-            editModel:''
+            editModel:'',
+            editTable:''
         };
     },
     mounted(){
@@ -117,11 +118,13 @@ template:`
             
             this.editModule = this.selected[0].module;
             this.editModel = this.selected[0].model;
+            this.editTable = this.selected[0].table;
         },
         dblClickRow(evt, row){
             //console.log(row.item.module, row.item.model)
             this.editModule = row.item.module;
             this.editModel = row.item.model;
+            this.editTable = row.item.table;
             this.showDialogEditModel();
         },
 

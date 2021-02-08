@@ -11,7 +11,7 @@ $response = new \MapDapRest\Response();
        $file = ROOT_APP_PATH.$module."/Models/".$model.".php";
        $class = "App\\".$module."\\Models\\".$model;
 
-$response->setBody(["model" => $class::modelInfo() , 
+$response->setBody(["model" => $class::modelInfo(),
                "roles" => \MapDapRest\Utils::getAllRoles(false),
                "column_types" => \MapDapRest\Utils::getAllColumnTypes(),
               ]);
