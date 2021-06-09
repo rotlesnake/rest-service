@@ -35,6 +35,7 @@ class RegisterController extends \MapDapRest\Controller
        if (!$user) return [];
 
        $this->APP->auth->login($request->params);
+       \App\Auth\Events\Emits::userRegistered($this->APP->auth);
 
        return ["user"=>$this->APP->auth->getFields()];
     }

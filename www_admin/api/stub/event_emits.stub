@@ -5,9 +5,9 @@ namespace App\<%MODULE%>\Events;
 class Emits
 {
 
-    public static function someEvent($eventData) {
+    public static function someEvent($eventData) 
     {
-        $APP = App::getInstance();
+        $APP = \MapDapRest\App::getInstance();
         $APP->emit("someEvent", $eventData);
     }
 
