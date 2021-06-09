@@ -21,6 +21,13 @@ $response = new \MapDapRest\Response();
        $txt = str_replace("<LABEL>",  $label, $txt);
        file_put_contents(ROOT_APP_PATH.$module."/Models/".$model.".php", $txt);
 
+       if (file_exists(ROOT_APP_PATH.$module."/Facades")) {
+           $txt = file_get_contents(__DIR__."/stub/facade.stub");
+           $txt = str_replace("<MODULE>",  $module, $txt);
+           $txt = str_replace("<MODEL>",  $model, $txt);
+           file_put_contents(ROOT_APP_PATH.$module."/Facades/".$model."Facade.php", $txt);
+       }
+
 
 $response->setBody(["error"=>0, "message"=>""]);
 $response->send();

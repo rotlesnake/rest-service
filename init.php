@@ -36,9 +36,10 @@ $settings = [
 */
 ];
 
+if ($settings['debug']===false) error_reporting(0);
+
 $APP->initDB($settings['database']);
 $APP->setAuth( new \App\Auth\Auth() );
 
 ini_set('date.timezone', $settings['timezone']);
 date_default_timezone_set($settings['timezone']);
-

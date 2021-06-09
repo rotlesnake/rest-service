@@ -109,9 +109,9 @@ class Roles extends \MapDapRest\Model
 
 	"columns"=>[
                 "id" => ["type"=>"integer", "label"=>"id", "read"=>$acc_all, "add"=>[], "edit"=>[] ],
-                "created_at" => ["type"=>"timestamp", "label"=>"Дата создания", "read"=>$acc_all, "add"=>[], "edit"=>[] ],
-                "updated_at" => ["type"=>"timestamp", "label"=>"Дата изменения", "read"=>$acc_all, "add"=>[], "edit"=>[] ],
-                "created_by_user" => ["type"=>"linkTable", "label"=>"Создано пользователем", "table"=>"users", "field"=>"login", "read"=>$acc_all, "add"=>[], "edit"=>[] ],
+                "created_at" => ["type"=>"timestamp", "label"=>"Дата создания", "hidden"=>true, "read"=>$acc_all, "add"=>[], "edit"=>[] ],
+                "updated_at" => ["type"=>"timestamp", "label"=>"Дата изменения", "hidden"=>true, "read"=>$acc_all, "add"=>[], "edit"=>[] ],
+                "created_by_user" => ["type"=>"linkTable", "label"=>"Создано пользователем", "table"=>"users", "field"=>"login", "hidden"=>true, "read"=>$acc_all, "add"=>[], "edit"=>[] ],
 
                 "name" => ["type"=>"string", "label"=>"Наименование",  "read"=>$acc_all, "add"=>$acc_all, "edit"=>$acc_all ], 
 	],

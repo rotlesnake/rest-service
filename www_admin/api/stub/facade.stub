@@ -1,0 +1,15 @@
+<?php
+namespace App\<MODULE>\Facades;
+
+
+class <MODEL>Facade
+{
+
+    public static function add($data) {
+        $APP = App::getInstance();
+
+        return [];
+    }
+
+
+}//class

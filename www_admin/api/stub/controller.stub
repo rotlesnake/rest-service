@@ -14,7 +14,7 @@ class <NAME>Controller extends \MapDapRest\Controller
     }
 
 
-    /**  **/
+    /** any other action **/
     public function anyAction($request, $response, $controller, $action, $params) {
 
        return [];

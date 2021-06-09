@@ -175,10 +175,9 @@ class UserPosts extends \MapDapRest\Model
 
 		"text"=>[
  			"type"=>"string",
- 			"label"=>"Логин",
- 			"placeholder"=>"Фамилия Имя - пользователя",
- 			"hint"=>"Уникальное поле",
-                        "index"=>"unique",
+ 			"label"=>"пользователя",
+ 			"placeholder"=>"пользователя",
+ 			"hint"=>"поле",
  			"width"=>200,
  			"rules"=>"[ v => v.length>2 || 'Обязательное поле' ]",
  			"prepend-icon"=>"person", "append-icon"=>"person", "type"=>"text", "outlined"=>true, "filled"=>false, "color"=>"#909090", "counter"=>true, "dark"=>false, "dense"=>false, "hide-details"=>false, "persistent-hint"=>false, "rounded"=>false, "shaped"=>false, "clearable"=>false,

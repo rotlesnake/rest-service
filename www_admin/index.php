@@ -1,6 +1,14 @@
 <?php
 require(__DIR__."/../init.php");
-$APP->auth->login(["login"=>"admin", "password"=>"admin"]);
+
+try {
+    $APP->auth->login(["login"=>"admin", "password"=>"admin"]);
+} catch(Exception $e) {
+    unlink( \MapDapRest\Utils::getFilenameModels() );
+    \MapDapRest\Migrate::migrate();
+    $APP->auth->login(["login"=>"admin", "password"=>"admin"]);
+}
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -9,7 +17,7 @@ $APP->auth->login(["login"=>"admin", "password"=>"admin"]);
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
 
-    <title>APP MICRO</title>
+    <title>APP CONFIG</title>
 
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900">
     <link href="https://cdn.jsdelivr.net/npm/@mdi/font@5.8.55/css/materialdesignicons.min.css" rel="stylesheet">
