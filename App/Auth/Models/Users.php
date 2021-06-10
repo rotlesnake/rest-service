@@ -156,10 +156,11 @@ class Users extends \MapDapRest\Model
                    "updated_at"=>["type"=>"timestamp", "label"=>"Дата изменения", "read"=>$acc_all, "hidden"=>true, "add"=>[], "edit"=>[], "name"=>"updated_at", ], 
                    "created_by_user"=>["type"=>"linkTable", "label"=>"Создано пользователем", "table"=>"users", "field"=>"login", "hidden"=>true, "read"=>$acc_all, "add"=>[], "edit"=>[], "name"=>"created_by_user", ], 
 
-                   "login"=>["type"=>"string", "label"=>"Логин", "read"=>$acc_all, "add"=>$acc_all, "edit"=>$acc_admin, "name"=>"login", "visible"=>true], 
+                   "login"=>["type"=>"string", "label"=>"Логин", "rules"=>"[v=>v.length > 3 || 'Обязательное поле']", "read"=>$acc_all, "add"=>$acc_all, "edit"=>$acc_admin, "name"=>"login", "visible"=>true], 
                    "password"=>["type"=>"password", "label"=>"Пароль", "read"=>$acc_all, "add"=>$acc_all, "edit"=>$acc_all, "name"=>"password", ], 
                    "role_id"=>["type"=>"linkTable", "label"=>"Роль", "table"=>"roles", "field"=>"name", "read"=>$acc_all, "add"=>$acc_admin, "edit"=>$acc_admin, "name"=>"role_id", ], 
-                   "status"=>["type"=>"select", "label"=>"Статус", "typeSelect"=>"combobox", "items"=>["0"=>"Заблокирован", "1"=>"Активный", ], "defaut"=>"1", "read"=>$acc_all, "add"=>[], "edit"=>[], "name"=>"status", ], 
+                   "status"=>["type"=>"select", "label"=>"Статус", "typeSelect"=>"combobox", "items"=>["-1"=>"Заблокирован", "1"=>"Активный", ], "defaut"=>"1", "read"=>$acc_all, "add"=>[], "edit"=>[], "name"=>"status", ], 
+                   "block_comment"=>["type"=>"string", "label"=>"Причина блокировки", "rules"=>"[v=>v.length > 3 || 'Обязательное поле']", "vif"=>"[status] < 0", "read"=>$acc_all, "add"=>[], "edit"=>[], "name"=>"status", ], 
                    "photo"=>["type"=>"images", "label"=>"Фотография", "multiple"=>false, "read"=>$acc_all, "add"=>$acc_all, "edit"=>$acc_all, "name"=>"photo", ], 
                    "token"=>["type"=>"string", "label"=>"Токен", "index"=>"index", "width"=>200, "read"=>$acc_all, "add"=>[], "edit"=>[], "name"=>"token", "hidden"=>true, "masked"=>false, ], 
                    "token_expire"=>["type"=>"dateTime", "label"=>"Срок токена", "width"=>200, "read"=>[], "add"=>[], "edit"=>[], "name"=>"token_expire", ], 
