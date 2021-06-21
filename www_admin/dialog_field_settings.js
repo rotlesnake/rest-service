@@ -42,8 +42,9 @@ template:`
                     <v-checkbox v-model="field.clearable" :label="'Показывать кнопку обнулить поле: '+(field.clearable?'Да':'Нет')" hide-details></v-checkbox>
 
 
-                    <div class="mt-8 title">Проверка заполнения</div>
-                    <v-text-field class="ml-0 mt-2" v-model="field.rules" label="Правила проверки" placeholder="[v=> v.length>0 || 'заполните поле']" outlined clearable></v-text-field>
+                    <div class="mt-6 title">Проверка заполнения</div>
+                    <v-text-field class="ml-0 mt-2" v-model="field.rules" label="Правила проверки заполнения" placeholder="[v=> v.length>0 || 'заполните поле']" hide-details outlined clearable dense></v-text-field>
+                    <v-text-field class="ml-0 mt-2" v-model="field.vif" label="Условия отображения" placeholder="[status] < 0" hide-details outlined clearable dense></v-text-field>
 
 
                     <div class="mt-4" v-if="field.type=='string'">
@@ -51,27 +52,33 @@ template:`
                         <v-row>
                             <v-checkbox v-model="field.masked" :label="'Использовать маску: '+(field.masked?'Да':'Нет')"></v-checkbox>
                             <v-text-field class="ml-4" v-if="field.masked" v-model="field.mask" label="Маска поля" placeholder="8(999)999-99-99" outlined clearable
-                            hint="9-число *-любой символ" persistent-hint></v-text-field>
+                            hint="9-число *-любой символ" persistent-hint dense></v-text-field>
                         </v-row>
                     </div>
 
                     <div class="mt-4" v-if="field.type=='text'">
-                        <div class="ma-2 title">Ввод текста</div>
-                            <v-text-field class="ml-4" v-model="field.rows" label="Количество линий" placeholder="4" outlined clearable></v-text-field>
+                        <div class="my-2 title">Ввод текста</div>
+                            <v-text-field class="ml-4" v-model="field.rows" label="Количество линий" placeholder="4" outlined clearable dense></v-text-field>
                     </div>
 
                     <div class="mt-4" v-if="field.type=='select'">
-                        <div class="ma-1 title">Выбор из списка</div>
-
+                        <div class="my-2 title">Выбор из списка</div>
+                        <v-row v-for="(item,i) in allItems">
+                            <v-col cols="2" class="py-1"> <v-text-field v-model="allItems[i].key" label="Значение" outlined clearable hide-details dense></v-text-field> </v-col>
+                            <v-col cols="10" class="py-1"> <v-text-field v-model="allItems[i].value" label="Описание"  outlined clearable hide-details dense></v-text-field> </v-col>
+                        </v-row>
+                        <v-btn class="my-4" @click="addItem" color="green">+ Добавить пункт</v-btn>
                     </div>
 
                     <div class="mt-4" v-if="field.type=='linkTable'">
-                        <div class="ma-1 title">Выбор из таблицы</div>
+                        <div class="my-2 title">Выбор из таблицы</div>
                         <v-select v-model="field.typeSelect" :items="['table','combobox']" label="Способ выбора" outlined></v-select>
 
-                        <v-select v-model="field.table"  :items="allTables"   item-value="name" item-text="label" label="Таблица" outlined clearable></v-select>
-                        <v-select v-model="field.field"  :items="tableFields" item-value="name" item-text="label" label="Поле" outlined clearable hide-details></v-select>
+                        <v-select v-if="false" v-model="field.table"  :items="allTables"   item-value="name" item-text="label" label="Таблица" outlined clearable dense></v-select>
+                        <v-text-field v-model="field.table" label="Таблица" placeholder="Название таблицы (en)" outlined clearable hide-details dense></v-text-field>
+                        <v-text-field class="mt-2" v-model="field.field" label="Поле" placeholder="Название поля (en)" outlined clearable hide-details dense></v-text-field>
 
+                        <v-checkbox v-model="field.object" :label="'Отдавать все данные выбранной таблицы: '+(field.object?'Да':'Нет')" hide-details></v-checkbox>
                         <v-checkbox v-model="field.multiple" :label="'Мультивыбор: '+(field.multiple?'Да':'Нет')" hide-details></v-checkbox>
                     </div>
 
@@ -103,6 +110,8 @@ template:`
 
             index: 0,
             field: {},
+            allTables:[],
+            allItems:[],
 
         };
 	},
@@ -112,22 +121,40 @@ template:`
         show(item, index){
             this.field = JSON.parse( JSON.stringify(item) );
             this.index = index;
-
             this.active = true;
+
+            if (this.field.type=='select') {
+               this.allItems = [];
+               for (let i in this.field.items){
+                   this.allItems.push({key:i, value:this.field.items[i]});
+               }
+            }
         },
 
         save(){
             this.$refs.form.validate();
             if (!this.form_valid) return;
 
-			this.active = false;
-			this.$emit("save", this.index, this.field);
+            if (this.field.type=='select') {
+                this.field.items = {};
+                this.allItems.forEach(e=>{
+                    this.field.items[e.key] = e.value;
+                });
+            }
+
+            this.active = false;
+            this.$emit("save", this.index, this.field);
         },
 		
-		close(){
-			this.active = false;
-			this.$emit("close");
-		},
+        close(){
+            this.active = false;
+            this.$emit("close");
+        },
+
+        addItem(){
+            let i = this.allItems.length + 1;
+            this.allItems.push({key:i, value:"описание"});
+        },
     },
 
 });

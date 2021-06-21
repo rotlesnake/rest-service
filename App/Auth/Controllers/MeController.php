@@ -14,7 +14,9 @@ class MeController extends \MapDapRest\Controller
     }
 
 
-    /**  **/
+    /** Информация о текущем пользователе <br>
+       @return [user:{}]
+    **/
     public function indexAction($request, $response, $params) {
        return $this->APP->auth->getFields([],["refresh_token","refresh_token_expire"]);
     }

@@ -16,15 +16,20 @@ $response = new \MapDapRest\Response();
        mkdir($dir."/Models/", 0777);
        mkdir($dir."/Events/", 0777);
        mkdir($dir."/Facades/", 0777);
-       mkdir($dir."/Services/", 0777);
+       //mkdir($dir."/Services/", 0777);
 
 
        $txt = file_get_contents(__DIR__."/stub/event_emits.stub");
        $txt = str_replace("<MODULE>",  $module, $txt);
        file_put_contents(ROOT_APP_PATH.$module."/Events/Emits.php", $txt);
+
        $txt = file_get_contents(__DIR__."/stub/event_listening.stub");
        $txt = str_replace("<MODULE>",  $module, $txt);
        file_put_contents(ROOT_APP_PATH.$module."/Events/Listening.php", $txt);
+
+       $txt = file_get_contents(__DIR__."/stub/module_settings.stub");
+       $txt = str_replace("<MODULE>",  $module, $txt);
+       file_put_contents(ROOT_APP_PATH.$module."/Settings.php", $txt);
 
 
 $response->setBody([]);

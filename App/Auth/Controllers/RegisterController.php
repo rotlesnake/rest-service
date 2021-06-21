@@ -2,14 +2,18 @@
 namespace App\Auth\Controllers;
 
 
-
 class RegisterController extends \MapDapRest\Controller
 {
 
     public $requireAuth = false;
 
 
-    /** POST(account) @return account.json  **/
+    /** Регистрация пользователя <br>
+       @login <br>
+       @password <br>
+       @password2 <br>
+       @return [user:{}]
+    **/
     public function indexAction($request, $response, $params) {
        die();
        if (!$request->hasParam("login")) {
@@ -35,7 +39,6 @@ class RegisterController extends \MapDapRest\Controller
        if (!$user) return [];
 
        $this->APP->auth->login($request->params);
-       \App\Auth\Events\Emits::userRegistered($this->APP->auth);
 
        return ["user"=>$this->APP->auth->getFields()];
     }

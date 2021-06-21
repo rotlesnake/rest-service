@@ -89,7 +89,7 @@ class Roles extends \MapDapRest\Model
 	"table"=>"roles",
 	"primary_key"=>"id",
 	"category"=>"Система",
-	"name"=>"Таблица или Справочник",
+	"name"=>"Список ролей в системе",
 
         "sortBy"=>["id"],
         "itemsPerPage"=>100,
@@ -113,9 +113,25 @@ class Roles extends \MapDapRest\Model
                 "updated_at" => ["type"=>"timestamp", "label"=>"Дата изменения", "hidden"=>true, "read"=>$acc_all, "add"=>[], "edit"=>[] ],
                 "created_by_user" => ["type"=>"linkTable", "label"=>"Создано пользователем", "table"=>"users", "field"=>"login", "hidden"=>true, "read"=>$acc_all, "add"=>[], "edit"=>[] ],
 
-                "name" => ["type"=>"string", "label"=>"Наименование",  "read"=>$acc_all, "add"=>$acc_all, "edit"=>$acc_all ], 
+                "name" => ["type"=>"string", "label"=>"Наименование",  "read"=>$acc_all, "add"=>$acc_admin, "edit"=>$acc_admin ], 
 	],
-
+	"seeds"=> [
+	             [
+                      'id'    => 6,
+                      'created_by_user'    => 1,
+                      'name'    => 'Механник',
+                     ],
+	             [
+                      'id'    => 7,
+                      'created_by_user'    => 1,
+                      'name'    => 'Медик',
+                     ],
+	             [
+                      'id'    => 8,
+                      'created_by_user'    => 1,
+                      'name'    => 'Водитель',
+                     ],
+        ]
 
       ];
     }//modelInfo

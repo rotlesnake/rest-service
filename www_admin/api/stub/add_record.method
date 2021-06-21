@@ -4,11 +4,12 @@
        $user = $this->APP->auth->getFields();
        $table_name = $request->getParam("table_name");
 
-       $table_model = $this->APP->getModel($table_name);
+       $tableModelClass = $this->APP->getModel($table_name);
 
-       $row = new $table_model();
+       $row = new $tableModelClass();
        $row->name = "test";
        $row->save();
+       $response-setError(0,"ok");
 
-       return ["error"=>0];
+       return ["row"=>$row];
     }

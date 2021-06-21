@@ -20,6 +20,18 @@ $response = new \MapDapRest\Response();
         closedir($dh);
         }
 
+      sort($rez, SORT_NATURAL | SORT_FLAG_CASE);
+      return $rez;
+    }
+
+    function getModuleInfo($folder)
+    {
+      $rez="";
+      $file = ROOT_APP_PATH.$folder."/Settings.php";
+      if (file_exists($file)) {
+          $class = "\\App\\$folder\\Settings";
+          $rez = $class::$description;
+      }
       return $rez;
     }
 
@@ -55,6 +67,7 @@ $response = new \MapDapRest\Response();
           $modules[$k] = [
               "module"=>$v,
               "controllers"=>getControllersList($v),
+              "desc"=>getModuleInfo($v),
           ];
        }
 

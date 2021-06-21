@@ -19,7 +19,7 @@ $response = new \MapDapRest\Response();
             }
         closedir($dh);
         }
-
+      sort($rez, SORT_NATURAL | SORT_FLAG_CASE);
       return $rez;
     }
 
@@ -32,8 +32,17 @@ $response = new \MapDapRest\Response();
          $name = ucfirst(basename($file,".php"));
          $class = "\\App\\$folder\\Models\\".$name;
          $info = $class::modelInfo();
-         //array_push($rez[$name], $info );
          $rez[$name] = $info;
+      }
+      return $rez;
+    }
+    function getModuleInfo($folder)
+    {
+      $rez="";
+      $file = ROOT_APP_PATH.$folder."/Settings.php";
+      if (file_exists($file)) {
+          $class = "\\App\\$folder\\Settings";
+          $rez = $class::$description;
       }
       return $rez;
     }
@@ -42,6 +51,7 @@ $response = new \MapDapRest\Response();
 
        $columns = [];
        $rows = [];
+       $modulesInfo = [];
        array_push($columns, ["text"=>"Модуль", "value"=>"module", "width"=>150]);
        array_push($columns, ["text"=>"Модель", "value"=>"model",  "width"=>200]);
        array_push($columns, ["text"=>"Таблица", "value"=>"table",  "width"=>200]);
@@ -50,6 +60,7 @@ $response = new \MapDapRest\Response();
        $modules = getModulesList();
        foreach ($modules as $k=>$v) {
           $models = getModelsList($v);
+          $modulesInfo[] = ["name"=>$v, "desc"=>getModuleInfo($v) ];
           if (count($models)==0) $rows[] = ["module"=>$v,"model"=>"","table"=>"","name"=>""];
 
           foreach ($models as $kk=>$vv) {
@@ -62,6 +73,6 @@ $response = new \MapDapRest\Response();
           }
        }
 
-$response->setBody(["columns"=>$columns, "rows"=>$rows]);
+$response->setBody(["columns"=>$columns, "rows"=>$rows, "modules"=>$modulesInfo]);
 $response->send();
 

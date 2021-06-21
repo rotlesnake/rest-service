@@ -18,10 +18,12 @@ class LoginController extends \MapDapRest\Controller
     }
 
 
-
+    /** Авторизация пользователя <br>
+       @login <br>
+       @password <br>
+       @return [user:{}]
+    **/
     public function indexAction($request, $response, $params) {
-       \App\Auth\Events\Emits::userLogin($this->APP->auth);
- 
        return ["user"=>$this->APP->auth->getFields()];
     }
 

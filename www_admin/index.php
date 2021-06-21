@@ -2,7 +2,8 @@
 require(__DIR__."/../init.php");
 
 try {
-    $APP->auth->login(["login"=>"admin", "password"=>"admin"]);
+    $result = $APP->auth->login(["login"=>"admin", "password"=>"admin"]);
+    if ($result === false) die("auth error");
 } catch(Exception $e) {
     unlink( \MapDapRest\Utils::getFilenameModels() );
     \MapDapRest\Migrate::migrate();

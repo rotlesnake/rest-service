@@ -17,6 +17,7 @@ template:`
             <td colspan="9">
                 <v-btn icon @click.stop="toggle()"><v-icon>{{(isOpen ? 'keyboard_arrow_down':'keyboard_arrow_right')}}</v-icon></v-btn>
                 {{group}}
+                <div class="d-inline ml-4 caption grey--text">{{modulesInfo[group]}}</div>
             </td>
         </template>
         <template v-slot:group.summary>
@@ -68,6 +69,7 @@ template:`
 
             dialog:null,
             modules:[],
+            modulesInfo:{},
             editModule:'',
             editModel:'',
             editTable:''
@@ -91,10 +93,11 @@ template:`
                 this.rows = response.data.rows;
 
                 this.modules = [];
-                for (let item of this.rows) {
-                    if (this.modules.indexOf(item.module) >= 0) continue;
-                    this.modules.push(item.module);
-                }
+                this.modulesInfo = {};
+                response.data.modules.forEach(e=>{
+                    this.modules.push(e.name);
+                    this.modulesInfo[e.name] = e.desc;
+                });
             }).catch(error=>{
                 this.isLoading = false;
             });

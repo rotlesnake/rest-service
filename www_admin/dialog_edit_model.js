@@ -170,6 +170,15 @@ template:`
             this.$refs.form.validate();
             if (!this.form_valid) return;
 
+            this.modelInfo.columns = {};
+            this.columns.forEach(e=>{
+                this.modelInfo.columns[e.name] = e;
+            });
+            this.modelInfo.filter = {};
+            this.filters.forEach(e=>{
+                this.modelInfo.filter[e.name] = e;
+            });
+
             this.loader(true);
             axios({method:"POST", url:"api/database_model_edit.php", data:{module:this.module, model:this.model, table:this.table, info:this.modelInfo} }).then(response=>{
                 this.loader(false);

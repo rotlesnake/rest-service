@@ -8,7 +8,7 @@ function objectToPHP($fields, $level=0, $prekey="") {
 
    foreach ($fields as $k=>$v) {
        if (gettype($v)!="NULL") {
-          if (gettype($v)=="array") {
+          if (gettype($v)=="array" || gettype($v)=="object") {
              if ($k=="read") $v = array_map('intval',$v);
              if ($k=="add") $v = array_map('intval',$v);
              if ($k=="edit") $v = array_map('intval',$v);

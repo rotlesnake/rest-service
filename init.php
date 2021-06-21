@@ -2,7 +2,8 @@
 define("ROOT_PATH",   str_replace("/", DIRECTORY_SEPARATOR, realpath(__DIR__)."/") );
 define("APP_PATH",    str_replace("/", DIRECTORY_SEPARATOR, realpath(__DIR__)."/App/") );
 
-require(ROOT_PATH."/vendor/autoload.php");
+require("/var/www/u0513062/data/www/yy7.ru/PHP_VENDORS_NEW/autoload.php");
+
 
 $ROOT_URL = str_replace("//", "/", dirname($_SERVER["SCRIPT_NAME"])."/");
 if (!isset($_SERVER["REQUEST_SCHEME"])) $_SERVER["REQUEST_SCHEME"]="http";
@@ -14,26 +15,28 @@ $APP = new MapDapRest\App(ROOT_PATH, ROOT_URL, "App", "App", "www");
 $settings = [
         'debug'         => true,
         'timezone'      => 'Etc/GMT-3',
+/*
+        'database' => [
+            'driver'    => 'mysql',
+            'host'      => 'l2xl.ru',
+            'port'      => '3306',
+            'database'  => 'u0513062_snmig',
+            'username'  => 'u0513062_snmig',
+            'password'  => '0O1i5Z2m',
+            'charset'   => 'utf8',
+            'collation' => 'utf8_unicode_ci',
+            //'prefix'    => 'ch_game_',
+            'prefix'    => 'chronos_',
+            'engine'    => 'InnoDB', //'InnoDB' 'MyISAM'
+        ],
+*/
 
         'database' => [
             'driver'    => 'sqlite',
             'database'  => ROOT_PATH."App/database.db",
             'prefix'    => '',
         ],
-/*
-        'database' => [
-            'driver'    => 'mysql',
-            'host'      => 'localhost',
-            'port'      => '3306',
-            'database'  => 'learn',
-            'username'  => 'root',
-            'password'  => '',
-            'charset'   => 'utf8',
-            'collation' => 'utf8_unicode_ci',
-            'prefix'    => 'prj_',
-            'engine'    => 'InnoDB', //'InnoDB' 'MyISAM'
-        ],
-*/
+
 ];
 
 if ($settings['debug']===false) error_reporting(0);
@@ -43,3 +46,4 @@ $APP->setAuth( new \App\Auth\Auth() );
 
 ini_set('date.timezone', $settings['timezone']);
 date_default_timezone_set($settings['timezone']);
+

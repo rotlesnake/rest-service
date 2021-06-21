@@ -13,5 +13,6 @@
            $rows[$key]["name"] = $row["name"];
        }
 
+       $response-setError(0,"ok");
        return ["rows"=>$rows];
     }

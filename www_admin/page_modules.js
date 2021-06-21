@@ -14,7 +14,7 @@ template:`
 
         <v-expansion-panels>
             <v-expansion-panel v-for="(imodule,im) in modules" :key="im">
-            <v-expansion-panel-header class="title">{{imodule.module}}</v-expansion-panel-header>
+            <v-expansion-panel-header class="title">{{imodule.module}} <div class="d-inline ml-4 caption grey--text">{{imodule.desc}}</div> </v-expansion-panel-header>
             <v-expansion-panel-content>
                 <v-card v-for="(icontroller,ic) in imodule.controllers" :key="ic" class="ma-2 elevation-5">
                     <v-card-title class="py-1">
@@ -122,7 +122,7 @@ template:`
         
         addModule(){
             Swal.fire({title: 'Введите название модуля', input: 'text', inputPlaceholder: 'Модуль (en)'}).then(response=>{
-                if (response.isConfirmed && response.value.length>2) {
+                if (response.isConfirmed && response.value.length>1) {
 	            axios({method:"POST", url:"api/module_create.php", data:{name:response.value} }).then(response=>{
                         this.refresh();
                     }).catch(e=>{
@@ -133,7 +133,7 @@ template:`
 
         addController(moduleName){
             Swal.fire({title: 'Введите название контроллера', input: 'text', inputPlaceholder: 'Для модуля '+moduleName}).then(response=>{
-                if (response.isConfirmed && response.value.length>2) {
+                if (response.isConfirmed && response.value.length>1) {
 	            axios({method:"POST", url:"api/module_cotroller.php", data:{module:moduleName, name:response.value} }).then(response=>{
                         this.refresh();
                     }).catch(e=>{

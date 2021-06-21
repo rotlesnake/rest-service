@@ -99,6 +99,9 @@ class <MODEL> extends \MapDapRest\Model
 	"add"=>$acc_all,
 	"edit"=>$acc_all,
 	"delete"=>[],
+
+        //"parentTables"=>[["table"=>"user", "field"=>"user_id"]],
+        //"childrenTables"=>[["table"=>"user_posts", "field"=>"user_id"]],
 	
         "filter"=>[
             "created_at"=>["label"=>"Дата создания", "filterType"=>"like", "type"=>"date" ],
@@ -112,7 +115,7 @@ class <MODEL> extends \MapDapRest\Model
 		"created_by_user" => ["type"=>"linkTable", "label"=>"Создано пользователем", "table"=>"users", "field"=>"login", "read"=>$acc_all, "add"=>[], "edit"=>[] ],
 
 		"name" => ["type"=>"string", "label"=>"Наименование",  "read"=>$acc_all, "add"=>$acc_all, "edit"=>$acc_all ], 
-		"status"=>["type"=>"select", "label"=>"Статус", "typeSelect"=>"combobox", "items"=>["1"=>"Активный", "0"=>"Заблокирован"], "defaut"=>"1", "read"=>$acc_all, "add"=>$acc_all, "edit"=>$acc_all ],
+		"status"=>["type"=>"select", "label"=>"Статус", "typeSelect"=>"combobox", "items"=>["1"=>"Активный", "-1"=>"Заблокирован"], "defaut"=>"1", "read"=>$acc_all, "add"=>$acc_all, "edit"=>$acc_all ],
 	],
 
 	"seeds"=> [
