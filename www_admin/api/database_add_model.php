@@ -11,10 +11,10 @@ $response = new \MapDapRest\Response();
        $model = \MapDapRest\Utils::convUrlToModel( $request->getParam("model") );
        $table = \MapDapRest\Utils::convUrlToTable( $module.$model );
        $label = $request->getParam("label");
+       $tree = $request->getParam("tree");
 
        if ($APP->hasModel($table)) return ["error"=>1, "message"=>"exists"];
-
-       $txt = file_get_contents(__DIR__."/stub/model.stub");
+       $txt = file_get_contents(__DIR__.($tree ? "/stub/model_tree.stub" : "/stub/model.stub"));
        $txt = str_replace("<MODULE>",  $module, $txt);
        $txt = str_replace("<MODEL>",  $model, $txt);
        $txt = str_replace("<TABLE>",  $table, $txt);

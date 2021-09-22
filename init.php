@@ -2,7 +2,7 @@
 define("ROOT_PATH",   str_replace("/", DIRECTORY_SEPARATOR, realpath(__DIR__)."/") );
 define("APP_PATH",    str_replace("/", DIRECTORY_SEPARATOR, realpath(__DIR__)."/App/") );
 
-require("/var/www/u0513062/data/www/yy7.ru/PHP_VENDORS_NEW/autoload.php");
+require("vendor/autoload.php");
 
 
 $ROOT_URL = str_replace("//", "/", dirname($_SERVER["SCRIPT_NAME"])."/");

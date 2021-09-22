@@ -13,6 +13,17 @@ function objectToPHP($fields, $level=0, $prekey="") {
              if ($k=="add") $v = array_map('intval',$v);
              if ($k=="edit") $v = array_map('intval',$v);
              if ($k=="delete") $v = array_map('intval',$v);
+             if ($k=="childrenTables" || $k=="parentTables") { $str .= "\"".$k."\"=>[[\"table\"=>\"".$v[0]["table"]."\", \"field\"=>\"".$v[0]["field"]."\"]],\r\n           "; continue;}
+
+             if ($k=="columns") { 
+                foreach ($v as $kk=>$vv) {
+                    $new_key = \MapDapRest\Utils::convUrlToTable($kk);
+                    if (!isset($v[$new_key])) {
+                        $v[$new_key] = $vv;
+                        unset($v[$kk]);
+                    }
+                }
+             }
 
              $str .= "\"".$k."\"=>[";
              if ($k=="columns") { $str .= "\r\n                   "; }
@@ -51,7 +62,7 @@ function objectToPHP($fields, $level=0, $prekey="") {
              }
           }
        } else {
-          $str .= "\"***".$k."\", ";
+          if ($v !== null) $str .= "\"***".$k."\", ";
        }
 
        if ($level<1) $str .= "\r\n           ";

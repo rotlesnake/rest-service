@@ -45,6 +45,7 @@ template:`
                     <div class="mt-6 title">Проверка заполнения</div>
                     <v-text-field class="ml-0 mt-2" v-model="field.rules" label="Правила проверки заполнения" placeholder="[v=> v.length>0 || 'заполните поле']" hide-details outlined clearable dense></v-text-field>
                     <v-text-field class="ml-0 mt-2" v-model="field.vif" label="Условия отображения" placeholder="[status] < 0" hide-details outlined clearable dense></v-text-field>
+                    <v-text-field class="ml-0 mt-2" v-model="field.default" label="Значение по умолчнию" placeholder="0" hide-details outlined clearable dense></v-text-field>
 
 
                     <div class="mt-4" v-if="field.type=='string'">
@@ -56,14 +57,23 @@ template:`
                         </v-row>
                     </div>
 
+                    <div class="mt-4" v-if="field.type=='time'">
+                        <div class="ma-2 title">Ввод времени</div>
+                        <v-row>
+                            <v-select class="mx-2" v-model="field.step"  :items="[{value:'1', text:'00:00 - Часы:Минуты'},{value:'2', text:'00:00:00 - Часы:Минуты:Секунды'}]"  label="Тип ввода" outlined clearable dense></v-select>
+                        </v-row>
+                    </div>
+
                     <div class="mt-4" v-if="field.type=='text'">
                         <div class="my-2 title">Ввод текста</div>
                             <v-text-field class="ml-4" v-model="field.rows" label="Количество линий" placeholder="4" outlined clearable dense></v-text-field>
                     </div>
 
                     <div class="mt-4" v-if="field.type=='select'">
-                        <div class="my-2 title">Выбор из списка</div>
-                        <v-row v-for="(item,i) in allItems">
+                        <div class="mt-2 title">Выбор из списка</div>
+                        <v-checkbox v-model="field.multiple" :label="'Мультивыбор: '+(field.multiple?'Да':'Нет')" class="mt-n2 mb-4" hide-details></v-checkbox>
+                        <v-checkbox v-model="field.chips" :label="'Обернуть в чипсу: '+(field.multiple?'Да':'Нет')" class="mt-n4 mb-4" hide-details></v-checkbox>
+                        <v-row v-for="(item,i) in allItems" :key="i">
                             <v-col cols="2" class="py-1"> <v-text-field v-model="allItems[i].key" label="Значение" outlined clearable hide-details dense></v-text-field> </v-col>
                             <v-col cols="10" class="py-1"> <v-text-field v-model="allItems[i].value" label="Описание"  outlined clearable hide-details dense></v-text-field> </v-col>
                         </v-row>

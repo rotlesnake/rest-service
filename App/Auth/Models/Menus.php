@@ -102,6 +102,7 @@ class Menus extends \MapDapRest\Model
            "add"=>$acc_admin, 
            "edit"=>$acc_admin, 
            "delete"=>$acc_admin, 
+           "parentTables"=>[["table"=>"menus", "field"=>"parent_id"], ["table"=>"menus", "field"=>"sort"]],
            "filter"=>[
                    ], 
            "columns"=>[

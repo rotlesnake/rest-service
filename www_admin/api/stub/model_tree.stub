@@ -100,7 +100,7 @@ class <MODEL> extends \MapDapRest\Model
 	"edit"=>$acc_all,
 	"delete"=>[],
 
-        //"parentTables"=>[["table"=>"user", "field"=>"user_id"]],
+        "parentTables"=>[["table"=>"<TABLE>", "field"=>"parent_id"], ["table"=>"<TABLE>", "field"=>"sort"]],
         //"childrenTables"=>[["table"=>"user_posts", "field"=>"user_id"]],
 	
         "filter"=>[
@@ -110,6 +110,8 @@ class <MODEL> extends \MapDapRest\Model
 
 	"columns"=>[
 		"id" => ["type"=>"integer", "label"=>"id", "read"=>$acc_all, "add"=>[], "edit"=>[] ],
+		"parent_id" => ["type"=>"integer", "label"=>"parent_id", "read"=>$acc_all, "add"=>[], "edit"=>[] ],
+		"sort" => ["type"=>"integer", "label"=>"sort", "read"=>$acc_all, "add"=>[], "edit"=>[] ],
 		"created_at" => ["type"=>"timestamp", "label"=>"Дата создания", "read"=>$acc_all, "add"=>[], "edit"=>[] ],
 		"updated_at" => ["type"=>"timestamp", "label"=>"Дата изменения", "read"=>$acc_all, "add"=>[], "edit"=>[] ],
 		"created_by_user" => ["type"=>"linkTable", "label"=>"Создано пользователем", "table"=>"users", "field"=>"login", "read"=>$acc_all, "add"=>[], "edit"=>[] ],

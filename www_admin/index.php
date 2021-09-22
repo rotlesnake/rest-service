@@ -2,8 +2,21 @@
 require(__DIR__."/../init.php");
 
 try {
-    $result = $APP->auth->login(["login"=>"admin", "password"=>"admin"]);
-    if ($result === false) die("auth error");
+    if (!isset($_SERVER["PHP_AUTH_USER"])) {
+	Header("WWW-Authenticate: Basic realm=admin_access");
+	Header("HTTP/1.0 401 Unauthorized");
+	die();
+    } else {
+        $client_login = $_SERVER["PHP_AUTH_USER"];
+        $client_pass =  $_SERVER["PHP_AUTH_PW"];
+        $result = $APP->auth->login(["login"=>$client_login, "password"=>$client_pass]);
+
+	if ( $result === false ) {
+            Header("WWW-Authenticate: Basic realm=admin_access");
+            Header("HTTP/1.0 401 Unauthorized");
+            die();
+	}
+    } // end else PHP_AUTH_USER
 } catch(Exception $e) {
     unlink( \MapDapRest\Utils::getFilenameModels() );
     \MapDapRest\Migrate::migrate();
@@ -32,6 +45,8 @@ try {
     <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script src="//cdn.jsdelivr.net/npm/sortablejs@1.8.4/Sortable.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/Vue.Draggable/2.20.0/vuedraggable.umd.min.js"></script>
     <script src="js/dbquery.js"></script>
 </head>
 <body>
@@ -145,7 +160,7 @@ try {
 
 <style>
 .v-data-table-header th {font-size:16px !important;}
-.v-text-field__details { margin-top:-9px !important; margin-bottom:12px !important; }
+.v-text-field__details { margin-top:-6px !important; margin-bottom:12px !important; padding: 0px !important;}
 
 </style>
 </body>

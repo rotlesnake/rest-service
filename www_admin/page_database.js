@@ -31,7 +31,7 @@ template:`
 
                 <v-tooltip top color="green">
                     <template v-slot:activator="{ on }">
-                        <v-btn class="mx-2" color="primary" fab small v-on="on" @click="showDialogAddModel()">
+                        <v-btn class="ml-4 mr-4" color="primary" fab small v-on="on" @click="showDialogAddModel()">
                             <v-icon dark>add</v-icon>
                         </v-btn>
                     </template>
@@ -41,7 +41,7 @@ template:`
 
                 <v-tooltip top color="primary">
                     <template v-slot:activator="{ on }">
-                        <v-btn class="mx-2" color="primary" fab small v-on="on" @click="showDialogEditModel()" :disabled="selected.length==0">
+                        <v-btn class="mr-4" color="primary" fab small v-on="on" @click="showDialogEditModel()" :disabled="selected.length==0">
                             <v-icon dark>edit</v-icon>
                         </v-btn>
                     </template>

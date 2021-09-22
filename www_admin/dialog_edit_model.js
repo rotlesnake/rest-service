@@ -12,58 +12,91 @@ template:`
                 </v-btn>
             </v-toolbar>
 
-            <v-card-text class="pt-5" v-if="modelInfo">
+            <v-card-text class="pt-2" v-if="modelInfo">
                 <v-form ref="form" v-model="form_valid">
-                    <div class="ma-2 title">Наименование таблицы</div>
+                    <div class="mb-4 title">Общие настройки таблицы</div>
                     <v-row class="mx-0">
-                        <v-text-field v-model="modelInfo.name" label="Наименование таблицы" placeholder="Наименование таблицы" outlined></v-text-field>
-                        <v-text-field v-model="modelInfo.category" label="Категория" placeholder="Категория таблицы" outlined class="ml-4"></v-text-field>
+                        <v-text-field v-model="modelInfo.name" label="Наименование таблицы" placeholder="Наименование таблицы" outlined dense></v-text-field>
+                        <v-text-field v-model="modelInfo.category" label="Категория" placeholder="Категория таблицы" outlined dense class="ml-4"></v-text-field>
+                        <v-text-field v-model="modelInfo.type" label="Наименование формы редактирования" placeholder="Наименование формы редактирования" outlined dense class="ml-4"></v-text-field>
+                    </v-row>
+                    <v-row class="mx-0">
+                        <v-select v-model="modelInfo.sortBy[0]" :items="columns" item-value="name" item-text="label" label="Сортировка по полю" outlined dense></v-select>
+                        <v-select v-model="modelInfo.itemsPerPage" :items="modelInfo.itemsPerPageVariants" label="Кол-во записей на одной странице" outlined dense class="ml-4"></v-select>
                     </v-row>
 
-                    <div class="ma-2 title">Сортировка / Кол-во записей</div>
-                    <v-row class="mx-0">
-                        <v-select v-model="modelInfo.sortBy[0]" :items="columns" item-value="name" item-text="label" label="Сортировка по полю" outlined ></v-select>
-                        <v-select v-model="modelInfo.itemsPerPage" :items="modelInfo.itemsPerPageVariants" label="Кол-во записей на одной странице" outlined class="ml-4"></v-select>
-                    </v-row>
 
+                   <v-expansion-panels  class="my-3">
+                     <v-expansion-panel>
+                       <v-expansion-panel-header class="title py-1" color="#eee">
+                           Права доступа к таблице
+                       </v-expansion-panel-header>
+                       <v-expansion-panel-content color="#ffffff" class="pt-3">
+                           <v-select v-model="modelInfo.read"   :items="rolesList" label="Доступ на чтение данных" persistent-hint :hint="modelInfo.read.toString()" chips deletable-chips item-value="id" item-text="name" multiple outlined class="ml-4"></v-select>
+                           <v-select v-model="modelInfo.add"    :items="rolesList" label="Добавление записи" persistent-hint :hint="modelInfo.add.toString()" chips deletable-chips item-value="id" item-text="name" multiple outlined class="ml-4"></v-select>
+                           <v-select v-model="modelInfo.edit"   :items="rolesList" label="Изменение записи" persistent-hint :hint="modelInfo.edit.toString()" chips deletable-chips item-value="id" item-text="name" multiple outlined class="ml-4"></v-select>
+                           <v-select v-model="modelInfo.delete" :items="rolesList" label="Удаление записи" persistent-hint :hint="modelInfo.delete.toString()" chips deletable-chips item-value="id" item-text="name" multiple outlined class="ml-4"></v-select>
+                       </v-expansion-panel-content>
+                     </v-expansion-panel>
+                   </v-expansion-panels>
 
-                    <div class="ma-2 title">Права доступа</div>
-                        <v-select v-model="modelInfo.read"   :items="rolesList" label="Доступ на чтение данных" persistent-hint :hint="modelInfo.read.toString()" chips deletable-chips item-value="id" item-text="name" multiple outlined class="ml-4"></v-select>
-                        <v-select v-model="modelInfo.add"    :items="rolesList" label="Добавление записи" persistent-hint :hint="modelInfo.add.toString()" chips deletable-chips item-value="id" item-text="name" multiple outlined class="ml-4"></v-select>
-                        <v-select v-model="modelInfo.edit"   :items="rolesList" label="Изменение записи" persistent-hint :hint="modelInfo.edit.toString()" chips deletable-chips item-value="id" item-text="name" multiple outlined class="ml-4"></v-select>
-                        <v-select v-model="modelInfo.delete" :items="rolesList" label="Удаление записи" persistent-hint :hint="modelInfo.delete.toString()" chips deletable-chips item-value="id" item-text="name" multiple outlined class="ml-4"></v-select>
+                   <v-expansion-panels  class="my-3">
+                     <v-expansion-panel>
+                       <v-expansion-panel-header class="title py-1" color="#eee">
+                           Возможные фильтры
+                       </v-expansion-panel-header>
+                       <v-expansion-panel-content color="#ffffff" class="pt-5">
+                           <div v-for="(item,i) in filters" :key="i">
+                              <v-row class="mx-0">
+                                  <v-select v-model="item.name"  :items="columns" item-value="name" item-text="label" label="Поле фильтрации" outlined clearable></v-select>
+                                  <v-select v-model="item.filterType"  :items="['like','=','>','<','in']"  label="Тип фильтрации" outlined></v-select>
+                                  <v-text-field v-model="item.label" label="Наименование фильтра" placeholder="Наименование фильтра" outlined clearable></v-text-field>
+                              </v-row>
+                           </div>
+                           <v-btn icon> <v-icon @click="()=>{filters.push({});}" large color="primary">add</v-icon> </v-btn>
+                       </v-expansion-panel-content>
+                     </v-expansion-panel>
+                   </v-expansion-panels>
 
+                   <v-expansion-panels  class="my-3">
+                     <v-expansion-panel>
+                       <v-expansion-panel-header class="title py-1" color="#eee">
+                           Таблица родительская / подчиненная
+                       </v-expansion-panel-header>
+                       <v-expansion-panel-content color="#ffffff" class="pt-5">
+                           <v-select v-model="tableParentChilds"  :items="[{value:0, text:'Обычная таблица'}, {value:1, text:'Есть подчиненные'}, {value:2, text:'Есть родители'}]" label="Тип" outlined dense hide-details></v-select>
+                           <div v-if="tableParentChilds == 1" class="mt-2">
+                               <v-text-field v-model="childrenTables[0].table" label="Наименование подчиненной таблицы" placeholder="Название таблицы (en)" class="my-1" outlined dense hide-details></v-text-field>
+                               <v-text-field v-model="childrenTables[0].field" label="Название поля в подчиненной таблице" placeholder="Название поля (en)" class="my-1" outlined dense hide-details></v-text-field>
+                               <v-checkbox v-model="modelInfo.showChildrens" :label="'Показывать вложенные таблицы: '+(modelInfo.showChildrens?'Да':'Нет')" hide-details></v-checkbox>
+                           </div>
+                           <div v-if="tableParentChilds == 2" class="mt-2">
+                               <v-text-field v-model="parentTables[0].table" label="Наименование таблицы родителя" placeholder="Название таблицы (en)" class="my-1" outlined dense hide-details></v-text-field>
+                               <v-text-field v-model="parentTables[0].field" label="Название поля в этой таблице" placeholder="Название поля (en)" class="my-1" outlined dense hide-details></v-text-field>
+                           </div>
+                       </v-expansion-panel-content>
+                     </v-expansion-panel>
+                   </v-expansion-panels>
 
-                    <div class="ma-2 title">Форма редактирования</div>
-                    <v-row class="mx-0">
-                        <v-text-field v-model="modelInfo.type" label="Наименование формы редактирования" placeholder="Наименование формы редактирования" outlined></v-text-field>
-                    </v-row>
-
-                    <div class="ma-2 title">Фильтрация записей по полям  &nbsp; <v-icon @click="()=>{filters.push({});}" large color="primary">add</v-icon> </div>
-                    <div v-for="(item,i) in filters" :key="i">
-                        <v-row class="mx-0">
-                            <v-select v-model="item.name"  :items="columns" item-value="name" item-text="label" label="Поле фильтрации" outlined clearable></v-select>
-                            <v-select v-model="item.filterType"  :items="['like','=','>','<','in']"  label="Тип фильтрации" outlined></v-select>
-                            <v-text-field v-model="item.label" label="Наименование фильтра" placeholder="Наименование фильтра" outlined clearable></v-text-field>
-                        </v-row>
-                    </div>
 
                     <v-divider />
                     <div class="ma-2 display-1">ПОЛЯ ТАБЛИЦЫ</div>
 
-                    <div v-for="(item,i) in columns" :key="i+1000" class="my-6">
+
+                    <draggable v-model="columns" draggable=".field">
+                    <div v-for="(item,i) in columns" :key="i+1000" class="my-6 field">
                         <v-row class="mx-0">
-                            <v-text-field v-model="item.name" label="Наименование поля (en)" placeholder="Наименование поля (en)"  outlined dense hide-details class="ml-4" style="max-width:300px;" :disabled="item.name=='id' || item.name=='created_at' || item.name=='updated_at' || item.name=='created_by_user'"></v-text-field>
+                            <v-text-field v-model="item.name" label="Наименование поля (en)" placeholder="Наименование поля (en)"  outlined dense hide-details class="ml-4" style="max-width:300px;" :disabled="item.name=='id' || item.name=='created_at' || item.name=='updated_at' || item.name=='created_by_user' || item.name=='sort' || item.name=='parent_id'"></v-text-field>
                             <v-text-field v-model="item.label" label="Наименование поля (ru)" placeholder="Наименование поля (ru)" outlined dense hide-details class="ml-4" style="max-width:300px;"></v-text-field>
-                            <v-select     v-model="item.type"  :items="columnTypes"  label="Тип данных поля" outlined dense hide-details class="ml-4" :disabled="item.name=='id' || item.name=='created_at' || item.name=='updated_at' || item.name=='created_by_user'"></v-select>
+                            <v-select     v-model="item.type"  :items="columnTypes"  label="Тип данных" outlined dense hide-details class="ml-4" chips :disabled="item.name=='id' || item.name=='created_at' || item.name=='updated_at' || item.name=='created_by_user' || item.name=='sort' || item.name=='parent_id'"></v-select>
                             <v-btn color="blue" dark style="margin:2px 0 0 12px" @click="showFieldSettings(item,i)"> <v-icon size="36">settings</v-icon></v-btn>
                             <v-btn color="green" dark style="margin:2px 0 0 12px" @click="showFieldAccess(item,i)"> <v-icon size="32">how_to_reg</v-icon></v-btn>
                         </v-row>
                     </div>
-
+                    </draggable>
 
                     <v-divider class="mt-4" />
-                    <v-btn color="primary" class="ma-4" @click="()=>{columns.push({read:[], add:[], edit:[]});}"> <v-icon size="32" left>add</v-icon> Добавить поле </v-btn>
+                    <v-btn color="primary" class="ma-4" @click="()=>{columns.push({type:'string', label:'Наименование', name:'name', read:rolesList.map(e=>e.id), add:rolesList.map(e=>e.id), edit:rolesList.map(e=>e.id)});}"> <v-icon size="32" left>add</v-icon> Добавить поле </v-btn>
                     <v-divider />
 
 
@@ -108,6 +141,9 @@ template:`
             filters:[],
             columnTypes:[],
             rolesList:[],
+            tableParentChilds: 0,
+            childrenTables: [{}],
+            parentTables: [{}],
         };
 	},
 	
@@ -118,6 +154,12 @@ template:`
                 this.modelInfo = response.data.model;
                 this.rolesList = response.data.roles;
                 this.columnTypes = response.data.column_types;
+
+                this.tableParentChilds = 0,
+                this.childrenTables = [{}];
+                this.parentTables = [{}];
+                if (this.modelInfo.childrenTables) { this.tableParentChilds = 1; this.childrenTables = this.modelInfo.childrenTables; }
+                if (this.modelInfo.parentTables)   { this.tableParentChilds = 2; this.parentTables = this.modelInfo.parentTables;   }
 
                 this.columns = [];
                 for (let item in this.modelInfo.columns) {
@@ -169,6 +211,11 @@ template:`
         save(){
             this.$refs.form.validate();
             if (!this.form_valid) return;
+
+            this.modelInfo.childrenTables = null;
+            this.modelInfo.parentTables = null;
+            if (this.tableParentChilds == 1) this.modelInfo.childrenTables = this.childrenTables;
+            if (this.tableParentChilds == 2) this.modelInfo.parentTables = this.parentTables;
 
             this.modelInfo.columns = {};
             this.columns.forEach(e=>{
