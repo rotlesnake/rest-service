@@ -48,6 +48,15 @@ template:`
                     <span>Изменить модель</span>
                 </v-tooltip>
 
+                <v-tooltip top color="red">
+                    <template v-slot:activator="{ on }">
+                        <v-btn class="mr-4" color="red" fab small v-on="on" @click="showDialogDeleteModel()" :disabled="selected.length==0">
+                            <v-icon dark>delete</v-icon>
+                        </v-btn>
+                    </template>
+                    <span>Удалить модель</span>
+                </v-tooltip>
+
             </div>
         </template>
 
@@ -136,6 +145,9 @@ template:`
         },
         showDialogEditModel(){
             this.dialog = dialog_edit_model;
+        },
+        showDialogDeleteModel(){
+            this.dialog = dialog_delete_model;
         },
     },//methods
 
