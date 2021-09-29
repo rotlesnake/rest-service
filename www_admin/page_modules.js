@@ -1,6 +1,92 @@
 Vue.component('page_modules', {
 template:`
 <div>
+
+  <v-card class="mb-4">
+    <v-card-title class="py-2 px-4">API</v-card-title>
+    <v-divider />
+    <v-card-text class="py-2 px-4">
+        <v-expansion-panels>
+            <v-expansion-panel>
+                <v-expansion-panel-header class="py-2 px-4 title">Table  <div class="d-inline ml-4 caption grey--text">Управление таблицами</div> </v-expansion-panel-header>
+                <v-expansion-panel-content>
+                    <v-card class="ma-2 elevation-5">
+                        <v-card-title class="py-1">GET</v-card-title>
+                        <v-divider />
+                        <v-card-actions class="py-1">
+                            <div style="width:350px">/table/<span class="grey--text">[tableName]</span> </div> 
+                            <div class="caption">GET /table/users <br> Получить из таблицы users все записи с разбивкой по страницам</div> 
+                        </v-card-actions>
+                        <v-divider />
+                        <v-card-actions class="py-1">
+                            <div style="width:350px">/table/<span class="grey--text">[tableName]?page=1&limit=100&sort=login</span> </div> 
+                            <div class="caption">GET /table/users?page=1&limit=100&sort=login <br> Получить из таблицы users с параметрами
+                                <br>*page = номер страницы
+                                <br>*limit = кол-во записей на странице
+                                <br>*sort = по какому полю сортировать (если название поля начинается с - то оратная сортировка)
+                                <br>*fast = true - ускоренная выборка данных и без доп.информации о таблице
+                                <br>*filter = фильтрация записей
+                            </div> 
+                        </v-card-actions>
+                        <v-divider />
+                        <v-card-actions class="py-1">
+                            <div style="width:350px">/table/<span class="grey--text">[tableName]/[id]</span> </div>
+                            <div class="caption">GET /table/users/1 <br> Получить из таблицы users запись №1</div> 
+                        </v-card-actions>
+
+                        <v-divider />
+                        <v-card-title class="py-1">POST <div class="d-inline ml-5 caption grey--text">По умолчанию без параметра имеет действие добавления /add </div></v-card-title>
+                        <v-divider />
+                        <v-card-actions class="py-1">
+                            <div style="width:350px">/table/<span class="grey--text">[tableName]</span>/get </div>
+                            <div class="caption">POST /table/users/get <br> Получить данные из таблицы users с параметрами<br> 
+                                 {
+                                  <br> &nbsp; filter:[{field:"login", oper:"=", value:"admin"}], 
+                                  <br> &nbsp; sort:["login", "-fio"], 
+                                  <br> &nbsp; limit:100, 
+                                  <br> &nbsp; page:1, 
+                                 <br>} 
+                            </div> 
+                        </v-card-actions>
+                        <v-divider />
+                        <v-card-actions class="py-1">
+                            <div style="width:350px">/table/<span class="grey--text">[tableName]</span>/add </div>
+                            <div class="caption">POST /table/users/add <br> Добавить запись в таблицу users<br> {login:"test", phone:"8905001001"} </div> 
+                        </v-card-actions>
+                        <v-divider />
+                        <v-card-actions class="py-1">
+                            <div style="width:350px">/table/<span class="grey--text">[tableName]</span>/edit/1 </div>
+                            <div class="caption">POST /table/users/edit/1 <br> Изменить запись № 1 в таблице users<br> {login:"test", phone:"8905001001"} </div> 
+                        </v-card-actions>
+                        <v-divider />
+                        <v-card-actions class="py-1">
+                            <div style="width:350px">/table/<span class="grey--text">[tableName]</span>/delete/1 </div>
+                            <div class="caption">POST /table/users/delete/1 <br> Удалить запись № 1 в таблице users </div> 
+                        </v-card-actions>
+
+                        <v-divider />
+                        <v-card-title class="py-1">PUT</v-card-title>
+                        <v-divider />
+                        <v-card-actions class="py-1">
+                            <div style="width:350px">/table/<span class="grey--text">[tableName]</span>/1 </div>
+                            <div class="caption">PUT /table/users/1 <br> Изменить запись 1 в таблице users<br> {login:"test", phone:"8905001001"} </div> 
+                        </v-card-actions>
+
+                        <v-divider />
+                        <v-card-title class="py-1">DELETE</v-card-title>
+                        <v-divider />
+                        <v-card-actions class="py-1">
+                            <div style="width:350px">/table/<span class="grey--text">[tableName]</span>/1 </div>
+                            <div class="caption">DELETE /table/users/1 <br> Удалить запись 1 в таблице users </div> 
+                        </v-card-actions>
+
+                    </v-card>
+                </v-expansion-panel-content>
+            </v-expansion-panel>
+        </v-expansion-panels>
+    </v-card-text>
+  </v-card>
+
   <v-card>
     <v-card-title>
         Модули
