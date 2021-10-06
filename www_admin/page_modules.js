@@ -24,7 +24,9 @@ template:`
                                 <br>*page = номер страницы
                                 <br>*limit = кол-во записей на странице
                                 <br>*sort = по какому полю сортировать (если название поля начинается с - то оратная сортировка)
-                                <br>*fast = true - ускоренная выборка данных и без доп.информации о таблице
+                                <br>*fast = true - ускоренная выборка данных, без присоединения вложенных таблиц и без доп.информации о таблице
+                                <br>*mini = true - обыная выборка данных но без доп.информации о таблице
+                                <br>*fields = выбор полей fields[]=id&fields[]=name
                                 <br>*filter = фильтрация записей
                             </div> 
                         </v-card-actions>
@@ -41,7 +43,8 @@ template:`
                             <div style="width:350px">/table/<span class="grey--text">[tableName]</span>/get </div>
                             <div class="caption">POST /table/users/get <br> Получить данные из таблицы users с параметрами<br> 
                                  {
-                                  <br> &nbsp; filter:[{field:"login", oper:"=", value:"admin"}], 
+                                  <br> &nbsp; filter:[{field:"login", oper:"=", value:"admin"}, {field:"login", oper:"like", value:"text%"}], 
+                                  <br> &nbsp; fields:["id","name"], 
                                   <br> &nbsp; sort:["login", "-fio"], 
                                   <br> &nbsp; limit:100, 
                                   <br> &nbsp; page:1, 
