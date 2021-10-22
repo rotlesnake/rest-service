@@ -82,7 +82,7 @@ template:`
 
                     <div class="mt-4" v-if="field.type=='linkTable'">
                         <div class="my-2 title">Выбор из таблицы</div>
-                        <v-select v-model="field.typeSelect" :items="['table','combobox']" label="Способ выбора" outlined></v-select>
+                        <v-select v-model="field.typeSelect" :items="['table', 'tree', 'combobox']" label="Способ выбора" outlined></v-select>
 
                         <v-select v-if="false" v-model="field.table"  :items="allTables"   item-value="name" item-text="label" label="Таблица" outlined clearable dense></v-select>
                         <v-text-field v-model="field.table" label="Таблица" placeholder="Название таблицы (en)" outlined clearable hide-details dense></v-text-field>
