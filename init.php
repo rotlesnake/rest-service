@@ -8,7 +8,7 @@ require("vendor/autoload.php");
 $ROOT_URL = str_replace("//", "/", dirname($_SERVER["SCRIPT_NAME"])."/");
 if (!isset($_SERVER["REQUEST_SCHEME"])) $_SERVER["REQUEST_SCHEME"]="http";
 define("ROOT_URL", $ROOT_URL );
-define("FULL_URL", $_SERVER["REQUEST_SCHEME"]."://".$_SERVER["SERVER_NAME"].ROOT_URL);
+define("FULL_URL", $_SERVER["REQUEST_SCHEME"]."://".$_SERVER["SERVER_NAME"].(in_array($_SERVER["SERVER_PORT"],[80,443]) ? "" : ":".$_SERVER["SERVER_PORT"]).ROOT_URL);
 
 
 $APP = new MapDapRest\App(ROOT_PATH, ROOT_URL, "App", "App", "www");

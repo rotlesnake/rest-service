@@ -18,14 +18,21 @@ template:`
 
                     <div class="ma-2 title">Общие настройки</div>
                     <v-text-field v-model="field.width" label="Ширина в таблице" placeholder="200" outlined clearable hide-details dense></v-text-field>
+                    <v-text-field  class="mt-2" v-model="field.divider" label="Разделительный текст между полями" placeholder="Заголовок раздела" outlined clearable hide-details dense></v-text-field>
                     <v-checkbox v-model="field.hidden" :label="'Невидимо в таблице (прятать): '+(field.hidden?'Да':'Нет')" hide-details></v-checkbox>
                     <v-checkbox v-model="field.disabled" :label="'Не редактируемое: '+(field.disabled?'Да':'Нет')" hide-details></v-checkbox>
 
                     <v-text-field class="my-4" v-model="field.placeholder" label="Подсказка внутри элемента (placeholder)" placeholder="" outlined clearable hide-details dense></v-text-field>
                     <v-text-field class="my-4" v-model="field.hint" label="Подсказка внизу элемента (hint)" placeholder="" outlined clearable hide-details dense></v-text-field>
                     <v-row class="mx-0 my-4">
+                      <v-col cols="6">
                         <v-text-field class="" v-model="field['prepend-icon']" label="Иконка в начале" placeholder="" outlined clearable hide-details dense></v-text-field>
+                        <v-text-field class="" v-model="field['prepend-icon-text']" label="Подсказка при клике" placeholder="" outlined clearable hide-details dense></v-text-field>
+                      </v-col>
+                      <v-col cols="6">
                         <v-text-field class="ml-4" v-model="field['append-icon']" label="Иконка в конце" placeholder="" outlined clearable hide-details dense></v-text-field>
+                        <v-text-field class="ml-4" v-model="field['append-icon-text']" label="Подсказка при клике" placeholder="" outlined clearable hide-details dense></v-text-field>
+                      </v-col>
                     </v-row>
                     <v-row class="mx-0 my-4">
                         <v-text-field class="" v-model="field['color']" label="Цвет элемента" placeholder="" outlined clearable hide-details dense></v-text-field>
