@@ -18,15 +18,14 @@ $settings = [
 /*
         'database' => [
             'driver'    => 'mysql',
-            'host'      => 'l2xl.ru',
+            'host'      => 'localhost',
             'port'      => '3306',
-            'database'  => 'u0513062_snmig',
-            'username'  => 'u0513062_snmig',
-            'password'  => '0O1i5Z2m',
+            'database'  => 'test',
+            'username'  => 'root',
+            'password'  => '',
             'charset'   => 'utf8',
             'collation' => 'utf8_unicode_ci',
-            //'prefix'    => 'ch_game_',
-            'prefix'    => 'chronos_',
+            'prefix'    => '',
             'engine'    => 'InnoDB', //'InnoDB' 'MyISAM'
         ],
 */
