@@ -21,6 +21,7 @@ template:`
                     <v-text-field  class="mt-2" v-model="field.divider" label="Разделительный текст между полями" placeholder="Заголовок раздела" outlined clearable hide-details dense></v-text-field>
                     <v-checkbox v-model="field.hidden" :label="'Невидимо в таблице (прятать): '+(field.hidden?'Да':'Нет')" hide-details></v-checkbox>
                     <v-checkbox v-model="field.disabled" :label="'Не редактируемое: '+(field.disabled?'Да':'Нет')" hide-details></v-checkbox>
+                    <v-checkbox v-model="field.visible" :label="'Принудительное отображение поля в форме, даже если поле не редактируемое: '+(field.visible?'Да':'Нет')" hide-details></v-checkbox>
 
                     <v-text-field class="my-4" v-model="field.placeholder" label="Подсказка внутри элемента (placeholder)" placeholder="" outlined clearable hide-details dense></v-text-field>
                     <v-text-field class="my-4" v-model="field.hint" label="Подсказка внизу элемента (hint)" placeholder="" outlined clearable hide-details dense></v-text-field>
@@ -51,8 +52,9 @@ template:`
 
                     <div class="mt-6 title">Проверка заполнения</div>
                     <v-text-field class="ml-0 mt-2" v-model="field.rules" label="Правила проверки заполнения" placeholder="[v=> v.length>0 || 'заполните поле']" hide-details outlined clearable dense></v-text-field>
-                    <v-text-field class="ml-0 mt-2" v-model="field.vif" label="Условия отображения" placeholder="[status] < 0" hide-details outlined clearable dense></v-text-field>
-                    <v-text-field class="ml-0 mt-2" v-model="field.default" label="Значение по умолчнию" placeholder="0" hide-details outlined clearable dense></v-text-field>
+                    <v-text-field class="ml-0 mt-2" v-model="field.vif" label="Условия отображения" placeholder="[status] == 1 || IN([status], 1)" hide-details outlined clearable dense></v-text-field>
+                    <v-text-field class="ml-0 mt-2" v-model="field.default" label="Значение по умолчнию для Базы" placeholder="0" hide-details outlined clearable dense></v-text-field>
+                    <v-text-field class="ml-0 mt-2" v-model="field.defaultFront" label="Значение по умолчнию для Интерфейса (интерактивное)" placeholder="0" hide-details outlined clearable dense></v-text-field>
 
 
                     <div class="mt-4" v-if="field.type=='string'">
