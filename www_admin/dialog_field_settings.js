@@ -18,7 +18,8 @@ template:`
 
                     <div class="ma-2 title">Общие настройки</div>
                     <v-text-field v-model="field.width" label="Ширина в таблице" placeholder="200" outlined clearable hide-details dense></v-text-field>
-                    <v-text-field  class="mt-2" v-model="field.divider" label="Разделительный текст между полями" placeholder="Заголовок раздела" outlined clearable hide-details dense></v-text-field>
+                    <v-text-field class="mt-2" v-model="field.formWidth" label="Ширина в форме" placeholder="100%" outlined clearable hide-details dense></v-text-field>
+                    <v-text-field class="mt-2" v-model="field.divider" label="Разделительный текст между полями" placeholder="Заголовок раздела" outlined clearable hide-details dense></v-text-field>
                     <v-checkbox v-model="field.hidden" :label="'Невидимо в таблице (прятать): '+(field.hidden?'Да':'Нет')" hide-details></v-checkbox>
                     <v-checkbox v-model="field.disabled" :label="'Не редактируемое: '+(field.disabled?'Да':'Нет')" hide-details></v-checkbox>
                     <v-checkbox v-model="field.visible" :label="'Принудительное отображение поля в форме, даже если поле не редактируемое: '+(field.visible?'Да':'Нет')" hide-details></v-checkbox>

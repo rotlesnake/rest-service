@@ -12,7 +12,6 @@
         }
     ],
     "require": {
-        "php": "^7.2.5",
-        "rotlesnake/mapdaprest": "^0.9"
+        "rotlesnake/mapdaprest": "^1.0.0"
     }
 }
