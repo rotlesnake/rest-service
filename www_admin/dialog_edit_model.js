@@ -23,6 +23,7 @@ template:`
                     <v-row class="mx-0">
                         <v-select v-model="modelInfo.sortBy[0]" :items="columns" item-value="name" item-text="label" label="Сортировка по полю" outlined dense></v-select>
                         <v-select v-model="modelInfo.itemsPerPage" :items="modelInfo.itemsPerPageVariants" label="Кол-во записей на одной странице" outlined dense class="ml-4"></v-select>
+                        <v-text-field v-model="modelInfo.pagination" label="Кол-во страниц в форме ввода" placeholder="1" outlined dense class="ml-4"></v-text-field>
                     </v-row>
 
 
@@ -89,6 +90,9 @@ template:`
                             <v-text-field v-model="item.name" label="Наименование поля (en)" placeholder="Наименование поля (en)"  outlined dense hide-details class="ml-4" style="max-width:300px;" :disabled="item.name=='id' || item.name=='created_at' || item.name=='updated_at' || item.name=='created_by_user' || item.name=='sort' || item.name=='parent_id'"></v-text-field>
                             <v-text-field v-model="item.label" label="Наименование поля (ru)" placeholder="Наименование поля (ru)" outlined dense hide-details class="ml-4" style="max-width:300px;"></v-text-field>
                             <v-select     v-model="item.type"  :items="columnTypes"  label="Тип данных" outlined dense hide-details class="ml-4" chips :disabled="item.name=='id' || item.name=='created_at' || item.name=='updated_at' || item.name=='created_by_user' || item.name=='sort' || item.name=='parent_id'"></v-select>
+
+                            <v-text-field v-model="item.page" label="стр." placeholder="0" outlined dense hide-details class="ml-2" style="max-width:50px;"></v-text-field>
+
                             <v-btn color="blue" dark style="margin:2px 0 0 12px" @click="showFieldSettings(item,i)"> <v-icon size="36">settings</v-icon></v-btn>
                             <v-btn color="green" dark style="margin:2px 0 0 12px" @click="showFieldAccess(item,i)"> <v-icon size="32">how_to_reg</v-icon></v-btn>
                         </v-row>

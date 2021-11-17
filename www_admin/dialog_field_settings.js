@@ -20,6 +20,7 @@ template:`
                     <v-text-field v-model="field.width" label="Ширина в таблице" placeholder="200" outlined clearable hide-details dense></v-text-field>
                     <v-text-field class="mt-2" v-model="field.formWidth" label="Ширина в форме" placeholder="100%" outlined clearable hide-details dense></v-text-field>
                     <v-text-field class="mt-2" v-model="field.divider" label="Разделительный текст между полями" placeholder="Заголовок раздела" outlined clearable hide-details dense></v-text-field>
+                    <v-text-field class="mt-2" v-model="field.caption" label="Заголовок поля" placeholder="Заголовок поля" outlined clearable hide-details dense></v-text-field>
                     <v-checkbox v-model="field.hidden" :label="'Невидимо в таблице (прятать): '+(field.hidden?'Да':'Нет')" hide-details></v-checkbox>
                     <v-checkbox v-model="field.disabled" :label="'Не редактируемое: '+(field.disabled?'Да':'Нет')" hide-details></v-checkbox>
                     <v-checkbox v-model="field.visible" :label="'Принудительное отображение поля в форме, даже если поле не редактируемое: '+(field.visible?'Да':'Нет')" hide-details></v-checkbox>
@@ -32,8 +33,8 @@ template:`
                         <v-text-field class="" v-model="field['prepend-icon-text']" label="Подсказка при клике" placeholder="" outlined clearable hide-details dense></v-text-field>
                       </v-col>
                       <v-col cols="6">
-                        <v-text-field class="ml-4" v-model="field['append-icon']" label="Иконка в конце" placeholder="" outlined clearable hide-details dense></v-text-field>
-                        <v-text-field class="ml-4" v-model="field['append-icon-text']" label="Подсказка при клике" placeholder="" outlined clearable hide-details dense></v-text-field>
+                        <v-text-field class="ml-4" v-model="field['append-icon']" label="Иконка в конце" placeholder="mdi-information-outline" outlined clearable hide-details dense></v-text-field>
+                        <v-text-field class="ml-4" v-model="field['append-icon-text']" label="Подсказка при клике" placeholder="текст с html тегами" outlined clearable hide-details dense></v-text-field>
                       </v-col>
                     </v-row>
                     <v-row class="mx-0 my-4">
@@ -55,7 +56,7 @@ template:`
                     <v-text-field class="ml-0 mt-2" v-model="field.rules" label="Правила проверки заполнения" placeholder="[v=> v.length>0 || 'заполните поле']" hide-details outlined clearable dense></v-text-field>
                     <v-text-field class="ml-0 mt-2" v-model="field.vif" label="Условия отображения" placeholder="[status] == 1 || IN([status], 1)" hide-details outlined clearable dense></v-text-field>
                     <v-text-field class="ml-0 mt-2" v-model="field.default" label="Значение по умолчнию для Базы" placeholder="0" hide-details outlined clearable dense></v-text-field>
-                    <v-text-field class="ml-0 mt-2" v-model="field.defaultFront" label="Значение по умолчнию для Интерфейса (интерактивное)" placeholder="0" hide-details outlined clearable dense></v-text-field>
+                    <v-text-field class="ml-0 mt-2" v-model="field.defaultFront" label="Значение по умолчнию для Интерфейса" placeholder="now или 'Да' или 123" hide-details outlined clearable dense></v-text-field>
 
 
                     <div class="mt-4" v-if="field.type=='string'">
