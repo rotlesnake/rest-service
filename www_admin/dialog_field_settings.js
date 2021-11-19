@@ -55,6 +55,7 @@ template:`
                     <div class="mt-6 title">Проверка заполнения</div>
                     <v-text-field class="ml-0 mt-2" v-model="field.rules" label="Правила проверки заполнения" placeholder="[v=> v.length>0 || 'заполните поле']" hide-details outlined clearable dense></v-text-field>
                     <v-text-field class="ml-0 mt-2" v-model="field.vif" label="Условия отображения" placeholder="[status] == 1 || IN([status], 1)" hide-details outlined clearable dense></v-text-field>
+                    <v-text-field class="ml-0 mt-2" v-model="field.afterChange" label="Действие после изменения значения этого поля" placeholder="[status]<=2 ? SET('type',1) ;; IN([status],3) ? SET('type',2)" hide-details outlined clearable dense></v-text-field>
                     <v-text-field class="ml-0 mt-2" v-model="field.default" label="Значение по умолчнию для Базы" placeholder="0" hide-details outlined clearable dense></v-text-field>
                     <v-text-field class="ml-0 mt-2" v-model="field.defaultFront" label="Значение по умолчнию для Интерфейса" placeholder="now или 'Да' или 123" hide-details outlined clearable dense></v-text-field>
 
