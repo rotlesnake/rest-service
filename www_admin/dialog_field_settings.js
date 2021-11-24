@@ -99,6 +99,7 @@ template:`
                         <v-select v-if="false" v-model="field.table"  :items="allTables"   item-value="name" item-text="label" label="Таблица" outlined clearable dense></v-select>
                         <v-text-field v-model="field.table" label="Таблица" placeholder="Название таблицы (en)" outlined clearable hide-details dense></v-text-field>
                         <v-text-field class="mt-2" v-model="field.field" label="Поле" placeholder="Название поля (en)" outlined clearable hide-details dense></v-text-field>
+                        <v-text-field class="mt-2" v-model="field.tableFilter" label="Фильтр записей при выборе" placeholder="('id', '=', 123) ;; ('type', '>', [from_type]) ;; ('status', 'in', [statuses])" outlined clearable hide-details dense></v-text-field>
 
                         <v-checkbox v-model="field.object" :label="'Отдавать все данные выбранной таблицы: '+(field.object?'Да':'Нет')" hide-details></v-checkbox>
                         <v-checkbox v-model="field.multiple" :label="'Мультивыбор: '+(field.multiple?'Да':'Нет')" hide-details></v-checkbox>
