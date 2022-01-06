@@ -4,8 +4,12 @@ define("APP_PATH",    str_replace("/", DIRECTORY_SEPARATOR, realpath(__DIR__)."/
 
 require("vendor/autoload.php");
 
-
+//----calc ROOT_URL ----
 $ROOT_URL = str_replace("//", "/", dirname($_SERVER["SCRIPT_NAME"])."/");
+$lastdir = "/".basename(str_replace(DIRECTORY_SEPARATOR, "/", __DIR__))."/";
+$ndx = strpos($ROOT_URL,$lastdir);
+$ROOT_URL = substr($ROOT_URL, 0, $ndx+strlen($lastdir));
+//----------------------
 if (!isset($_SERVER["REQUEST_SCHEME"])) $_SERVER["REQUEST_SCHEME"]="http";
 define("ROOT_URL", $ROOT_URL );
 define("FULL_URL", $_SERVER["REQUEST_SCHEME"]."://".$_SERVER["SERVER_NAME"].(in_array($_SERVER["SERVER_PORT"],[80,443]) ? "" : ":".$_SERVER["SERVER_PORT"]).ROOT_URL);
