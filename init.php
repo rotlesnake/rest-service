@@ -8,7 +8,7 @@ require("vendor/autoload.php");
 $ROOT_URL = str_replace("//", "/", dirname($_SERVER["SCRIPT_NAME"])."/");
 $lastdir = "/".basename(str_replace(DIRECTORY_SEPARATOR, "/", __DIR__))."/";
 $ndx = strpos($ROOT_URL,$lastdir);
-$ROOT_URL = substr($ROOT_URL, 0, $ndx+strlen($lastdir));
+if ($ndx===0) { $ROOT_URL = substr($ROOT_URL, 0, $ndx+strlen($lastdir)); } else { $ROOT_URL = "/"; }
 //----------------------
 if (!isset($_SERVER["REQUEST_SCHEME"])) $_SERVER["REQUEST_SCHEME"]="http";
 define("ROOT_URL", $ROOT_URL );

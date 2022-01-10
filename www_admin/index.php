@@ -116,7 +116,7 @@ try {
         }
 
         $ROOT_URL = str_replace("//", "/", dirname($_SERVER["SCRIPT_NAME"])."/");
-        echo "axios.defaults.baseURL = '".ROOT_URL."'; ";
+        echo "axios.defaults.baseURL = '".$ROOT_URL."'; ";
         echo "axios.defaults.headers.common['token'] = '".$APP->auth->user->token."'; ";
     ?>
 
