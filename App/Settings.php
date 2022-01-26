@@ -10,5 +10,12 @@ class Settings {
     public static $replyEmail = "";
 
 
+/*
+    public static function middleware($APP, $controllerName, $actionName, $request, $response, $params)
+    {
+        file_put_contents(__DIR__."/debug.txt", "call: ".$controllerName."::".$actionName);
+    }
+*/
+
 
 }

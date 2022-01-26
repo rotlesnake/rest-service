@@ -12,6 +12,7 @@ class Roles extends \MapDapRest\Model
     //Добавление записи----------------------
     //Перед добавлением
     public static function beforeAdd($model) {
+        $model->name = \MapDapRest\Utils::getSlug($model->name);
     }
     
     //После добавления
@@ -22,6 +23,7 @@ class Roles extends \MapDapRest\Model
     //Изменение записи----------------------
     //Перед изменением
     public static function beforeEdit($model) {
+        $model->name = \MapDapRest\Utils::getSlug($model->name);
     }
 
     //После изменения
@@ -113,23 +115,39 @@ class Roles extends \MapDapRest\Model
                 "updated_at" => ["type"=>"timestamp", "label"=>"Дата изменения", "hidden"=>true, "read"=>$acc_all, "add"=>[], "edit"=>[] ],
                 "created_by_user" => ["type"=>"linkTable", "label"=>"Создано пользователем", "table"=>"users", "field"=>"login", "hidden"=>true, "read"=>$acc_all, "add"=>[], "edit"=>[] ],
 
-                "name" => ["type"=>"string", "label"=>"Наименование",  "read"=>$acc_all, "add"=>$acc_admin, "edit"=>$acc_admin ], 
+                "name" => ["type"=>"string", "label"=>"Наименование роли",  "read"=>$acc_all, "add"=>$acc_admin, "edit"=>$acc_admin ], 
+                "description" => ["type"=>"string", "label"=>"Описание роли",  "read"=>$acc_all, "add"=>$acc_admin, "edit"=>$acc_admin ], 
 	],
 	"seeds"=> [
 	             [
-                      'id'    => 6,
+                      'id'    => 1,
                       'created_by_user'    => 1,
-                      'name'    => 'Механник',
+                      'name'    => 'admin',
+                      'description'    => 'Администратор системы',
                      ],
 	             [
-                      'id'    => 7,
+                      'id'    => 2,
                       'created_by_user'    => 1,
-                      'name'    => 'Медик',
+                      'name'    => 'support',
+                      'description'    => 'Помошник администратора',
                      ],
 	             [
-                      'id'    => 8,
+                      'id'    => 3,
                       'created_by_user'    => 1,
-                      'name'    => 'Водитель',
+                      'name'    => 'dir',
+                      'description'    => 'Директор',
+                     ],
+	             [
+                      'id'    => 4,
+                      'created_by_user'    => 1,
+                      'name'    => 'buh',
+                      'description'    => 'Бухгалтер',
+                     ],
+	             [
+                      'id'    => 5,
+                      'created_by_user'    => 1,
+                      'name'    => 'Пользователь',
+                      'description'    => 'user',
                      ],
         ]
 
