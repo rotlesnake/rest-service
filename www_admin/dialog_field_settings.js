@@ -65,7 +65,8 @@ template:`
                         <v-row>
                             <v-checkbox v-model="field.masked" :label="'Использовать маску: '+(field.masked?'Да':'Нет')"></v-checkbox>
                             <v-text-field class="ml-4" v-if="field.masked" v-model="field.mask" label="Маска поля" placeholder="8(999)999-99-99" outlined clearable
-                            hint="9-число *-любой символ" persistent-hint dense></v-text-field>
+                            hint="9-число *-любой символ (спец маски: int float email amount)" persistent-hint dense></v-text-field>
+                            <v-checkbox v-if="field.masked" v-model="field.unmask" :label="'Убирать маску после ввода: '+(field.masked?'Да':'Нет')"></v-checkbox>
                         </v-row>
                     </div>
 
