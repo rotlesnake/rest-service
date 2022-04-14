@@ -49,4 +49,4 @@ $APP->setAuth( new \App\Auth\Auth() );
 
 ini_set('date.timezone', $settings['timezone']);
 date_default_timezone_set($settings['timezone']);
-
+setlocale(LC_TIME, 'ru_RU.UTF-8');
