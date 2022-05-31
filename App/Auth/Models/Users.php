@@ -104,13 +104,6 @@ class Users extends \MapDapRest\Model
             return array_map('intval', explode(',', $this->role_id));
         }
 
-        public function getPhotoAttribute($value) {
-            if (strlen($value) == 0) {
-                return FULL_URL."uploads/image/user/default.jpg";
-            }
-            return $value;
-        }
-
       //** Свои функции **********************************************************************************************
         //проверить на содержание одной из ролей
         public function hasRoles($checkList=[]) {
