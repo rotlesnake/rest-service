@@ -82,7 +82,7 @@ template:`
                             <v-text-field class="ml-4" v-model="field.rows" label="Количество линий" placeholder="4" outlined clearable dense></v-text-field>
                     </div>
 
-                    <div class="mt-4" v-if="field.type=='select'">
+                    <div class="mt-4" v-if="field.type=='select' || field.type=='selectText'">
                         <div class="mt-2 title">Выбор из списка</div>
                         <v-checkbox v-model="field.multiple" :label="'Мультивыбор: '+(field.multiple?'Да':'Нет')" class="mt-n2 mb-4" hide-details></v-checkbox>
                         <v-checkbox v-model="field.chips" :label="'Обернуть в чипсу: '+(field.multiple?'Да':'Нет')" class="mt-n4 mb-4" hide-details></v-checkbox>
@@ -147,7 +147,7 @@ template:`
             this.index = index;
             this.active = true;
 
-            if (this.field.type=='select') {
+            if (this.field.type=='select' || this.field.type=='selectText') {
                this.allItems = [];
                for (let i in this.field.items){
                    this.allItems.push({key:i, value:this.field.items[i]});
@@ -159,7 +159,7 @@ template:`
             this.$refs.form.validate();
             if (!this.form_valid) return;
 
-            if (this.field.type=='select') {
+            if (this.field.type=='select' || this.field.type=='selectText') {
                 this.field.items = {};
                 this.allItems.forEach(e=>{
                     this.field.items[e.key] = e.value;
