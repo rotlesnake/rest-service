@@ -72,18 +72,18 @@ echo "
     }
 
     setTimeout(()=>{
-        fetch('/auth/login/index',  {method: 'POST', body: JSON.stringify({login:'".$login."', password:'".$password."'})}).then(response=>{
-            logResponse('/auth/login',response);
+        fetch('".ROOT_URL."auth/login/index',  {method: 'POST', body: JSON.stringify({login:'".$login."', password:'".$password."'})}).then(response=>{
+            logResponse('".ROOT_URL."auth/login',response);
         }).catch(response=>{
             logResponse('/auth/login',response);
         });
     }, 0);
 
     setTimeout(()=>{
-        fetch('/auth/logout').then(response=>{
-            logResponse('/auth/logout',response);
+        fetch('".ROOT_URL."auth/logout').then(response=>{
+            logResponse('".ROOT_URL."auth/logout',response);
         }).catch(response=>{
-            logResponse('/auth/logout',response);
+            logResponse('".ROOT_URL."auth/logout',response);
         });
     }, 1000);
 

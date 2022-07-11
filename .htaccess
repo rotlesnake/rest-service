@@ -8,6 +8,8 @@ Options All -Indexes
 
 RewriteEngine On
 
+RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization},L]
+
 RewriteCond %{REQUEST_URI} /www/
 RewriteRule ^(.*)$ $1 [L,QSA]
 RewriteCond %{REQUEST_URI} /www_admin/
