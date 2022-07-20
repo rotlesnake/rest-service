@@ -12,6 +12,6 @@
         }
     ],
     "require": {
-        "rotlesnake/mapdaprest": "^1.0.0"
+        "rotlesnake/mapdaprest": "^1.1.2"
     }
 }

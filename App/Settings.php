@@ -2,6 +2,18 @@
 namespace App;
 
 
+/**
+ * @OA\Info(
+ *     version="1.0",
+ *     title="Программный продукт ПэйЭниВейЭвриДей",
+ *     description="Эта программа предназначена для...",
+ *     @OA\Contact(name="ООО ПП")
+ * )
+ * @OA\Server(
+ *     url="https://mysoft.ru",
+ *     description="API server"
+ * )
+ */
 class Settings {
 
     public static $description = "Система ...";
