@@ -146,8 +146,8 @@ class Roles extends \MapDapRest\Model
 	             [
                       'id'    => 5,
                       'created_by_user'    => 1,
-                      'name'    => 'Пользователь',
-                      'description'    => 'user',
+                      'name'    => 'user',
+                      'description'    => 'Пользователь',
                      ],
         ]
 

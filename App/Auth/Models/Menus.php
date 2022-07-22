@@ -94,7 +94,7 @@ class Menus extends \MapDapRest\Model
            "table"=>"menus", 
            "primary_key"=>"id", 
            "category"=>"Система", 
-           "name"=>"Менюшки", 
+           "name"=>"Меню системы", 
            "sortBy"=>["id", ], 
            "itemsPerPage"=>100, 
            "itemsPerPageVariants"=>[50,100,200,300,500,1000,], 
