@@ -83,44 +83,45 @@ class <MODEL> extends \MapDapRest\Model
 
     public static function modelInfo() {
       $acc_admin = [1];
+      $acc_support = [1,2,3,4];
       $acc_all = \MapDapRest\Utils::getAllRoles();
       
       return [
-	"table"=>"<TABLE>",
-	"primary_key"=>"id",
-	"category"=>"Система",
-	"name"=>"<LABEL>",
+      "table"=>"<TABLE>",
+      "primary_key"=>"id",
+      "category"=>"Система",
+      "name"=>"<LABEL>",
 
-        "sortBy"=>["id"],
-        "itemsPerPage"=>100,
-        "itemsPerPageVariants"=>[50,100,200,300,500,1000],
+      "sortBy"=>["id"],
+      "itemsPerPage"=>100,
+      "itemsPerPageVariants"=>[50,100,200,300,500,1000],
 
-	"read"=>$acc_all,
-	"add"=>$acc_all,
-	"edit"=>$acc_all,
-	"delete"=>[],
+      "read"=>$acc_all,
+      "add"=>$acc_all,
+      "edit"=>$acc_all,
+      "delete"=>[],
 
-        //"parentTables"=>[["table"=>"user", "field"=>"user_id"]],
-        //"childrenTables"=>[["table"=>"user_posts", "field"=>"user_id"]],
+      //"parentTables"=>[["table"=>"user", "field"=>"user_id"]],
+      //"childrenTables"=>[["table"=>"user_posts", "field"=>"user_id"]],
 	
-        "filter"=>[
-            "created_at"=>["label"=>"Дата создания", "filterType"=>"like"],
-            "created_by_user"=>["label"=>"Кто создал", "filterType"=>"="],
-        ],
+      "filter"=>[
+          "created_at"=>["label"=>"Дата создания", "filterType"=>"like"],
+          "created_by_user"=>["label"=>"Кто создал", "filterType"=>"="],
+      ],
 
-	"columns"=>[
-		"id" => ["type"=>"integer", "label"=>"id", "read"=>$acc_all, "add"=>[], "edit"=>[] ],
-		"created_at" => ["type"=>"timestamp", "label"=>"Дата создания", "read"=>$acc_all, "add"=>[], "edit"=>[] ],
-		"updated_at" => ["type"=>"timestamp", "label"=>"Дата изменения", "read"=>$acc_all, "add"=>[], "edit"=>[] ],
-		"created_by_user" => ["type"=>"linkTable", "label"=>"Создано пользователем", "table"=>"users", "field"=>"login", "read"=>$acc_all, "add"=>[], "edit"=>[] ],
+      "columns"=>[
+        "id" => ["type"=>"integer", "label"=>"id", "read"=>$acc_all, "add"=>[], "edit"=>[] ],
+        "created_at" => ["type"=>"timestamp", "label"=>"Дата создания", "hidden"=>true, "read"=>$acc_all, "add"=>[], "edit"=>[] ],
+        "updated_at" => ["type"=>"timestamp", "label"=>"Дата изменения", "hidden"=>true, "read"=>$acc_all, "add"=>[], "edit"=>[] ],
+        "created_by_user" => ["type"=>"linkTable", "label"=>"Создано пользователем", "table"=>"users", "field"=>"login", "hidden"=>true, "read"=>$acc_all, "add"=>[], "edit"=>[] ],
 
-		"name" => ["type"=>"string", "label"=>"Наименование",  "read"=>$acc_all, "add"=>$acc_all, "edit"=>$acc_all ], 
-	],
+        "name" => ["type"=>"string", "label"=>"Наименование",  "read"=>$acc_all, "add"=>$acc_support, "edit"=>$acc_support ], 
+      ],
 
-	"seeds"=> [
-	]
+      "seeds"=> [
+      ]
 
-      ];
+      ];//return
     }//modelInfo
 
 }//class
