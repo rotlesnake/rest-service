@@ -45,7 +45,9 @@ class LoginController extends \MapDapRest\Controller
     public function indexAction($request, $response, $params) {
        if ($this->APP->auth->isGuest()) {
            $response->setResponseCode(401);
-           return ["error"=>1, "message"=>"Ошибка в логине или пароле"];
+           $message = "Ошибка в логине или пароле";
+           if ($request->hasParam("token")) $message = "Ошибка в токене";
+           return ["error"=>1, "message"=>$message];
            die();
        }
 
