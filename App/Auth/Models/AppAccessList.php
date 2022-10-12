@@ -114,7 +114,7 @@ class AppAccessList extends \MapDapRest\Model
 		"id" => ["type"=>"integer", "label"=>"id", "read"=>$acc_all, "add"=>[], "edit"=>[] ],
 		"created_at" => ["type"=>"timestamp", "label"=>"Дата создания", "read"=>$acc_all, "add"=>[], "edit"=>[] ],
 		"updated_at" => ["type"=>"timestamp", "label"=>"Дата изменения", "read"=>$acc_all, "add"=>[], "edit"=>[] ],
-		"created_by_user" => ["type"=>"linkTable", "label"=>"Создано пользователем", "table"=>"users", "field"=>"login", "read"=>$acc_all, "add"=>[], "edit"=>[] ],
+		"created_by_user" => ["type"=>"integer", "label"=>"Создано пользователем", "table"=>"users", "field"=>"login", "read"=>$acc_all, "add"=>[], "edit"=>[] ],
 
 		"parent_id" => ["type"=>"integer", "label"=>"parent_id", "read"=>$acc_all, "add"=>[], "edit"=>[] ],
 		"sort" => ["type"=>"integer", "label"=>"sort", "read"=>$acc_all, "add"=>[], "edit"=>[] ],
