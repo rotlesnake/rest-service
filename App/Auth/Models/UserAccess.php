@@ -1,10 +1,10 @@
 <?php
-namespace App\<MODULE>\Models;
+namespace App\Auth\Models;
 
 
-class <MODEL> extends \MapDapRest\Model
+class UserAccess extends \MapDapRest\Model
 {
-    protected $table = "<TABLE>";
+    protected $table = "user_access";
     protected $primaryKey = 'id';
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
@@ -83,54 +83,52 @@ class <MODEL> extends \MapDapRest\Model
 
     public static function modelInfo() {
       $acc_admin = [1];
-      $acc_all = \MapDapRest\Utils::getAllRoles();
+      $acc_all = ["user_access/view", 1,2,3,4,5];
       
       return [
-      "table"=>"<TABLE>",
-      "primary_key"=>"id",
-      "category"=>"Система",
-      "name"=>"<LABEL>",
+	"table"=>"user_access",
+	"primary_key"=>"id",
+	"category"=>"Система",
+	"name"=>"Доступ пользователя к возможностям системы",
 
-      "sortBy"=>["id"],
-      "itemsPerPage"=>100,
-      "itemsPerPageVariants"=>[50,100,200,300,500,1000],
+        "sortBy"=>["id"],
+        "itemsPerPage"=>100,
+        "itemsPerPageVariants"=>[50,100,200,300,500,1000],
 
-      "acl"=> [
-        "<TABLE>/view" => "Просмотр",
-        "<TABLE>/add" => "Добавление",
-        "<TABLE>/edit" => "Изменение",
-        "<TABLE>/delete" => "Удаление",
-      ],
+	"acl"=> [
+	    "user_access/view" => "Просмотр",
+	    "user_access/add" => "Добавление",
+	    "user_access/edit" => "Изменение",
+	    "user_access/delete" => "Удаление",
+	],
 
-      "read"=>["<TABLE>/view", 1],
-      "add"=>["<TABLE>/add", 1],
-      "edit"=>["<TABLE>/edit", 1],
-      "delete"=>["<TABLE>/delete"],
+	"read"=>["user_access/view", 1,2,3,4,5],
+	"add"=>["user_access/add", 1],
+	"edit"=>["user_access/edit", 1],
+	"delete"=>["user_access/delete"],
 
-      "parentTables"=>[["table"=>"<TABLE>", "field"=>"parent_id"], ["table"=>"<TABLE>", "field"=>"sort"]],
-      //"childrenTables"=>[["table"=>"user_posts", "field"=>"user_id"]],
+        //"parentTables"=>[["table"=>"user", "field"=>"user_id"]],
+        //"childrenTables"=>[["table"=>"user_posts", "field"=>"user_id"]],
 	
-      "filter"=>[
+        "filter"=>[
             "created_at"=>["label"=>"Дата создания", "filterType"=>"like"],
             "created_by_user"=>["label"=>"Кто создал", "filterType"=>"="],
-      ],
+        ],
 
-      "columns"=>[
-        "id" => ["type"=>"integer", "label"=>"id", "read"=>["<TABLE>/view", 1], "add"=>[], "edit"=>[] ],
-        "created_at" => ["type"=>"timestamp", "label"=>"Дата создания", "read"=>["<TABLE>/view", 1], "add"=>[], "edit"=>[] ],
-        "updated_at" => ["type"=>"timestamp", "label"=>"Дата изменения", "read"=>["<TABLE>/view", 1], "add"=>[], "edit"=>[] ],
-        "created_by_user" => ["type"=>"linkTable", "label"=>"Создано пользователем", "table"=>"users", "field"=>"login", "read"=>["<TABLE>/view", 1], "add"=>[], "edit"=>[] ],
+	"columns"=>[
+		"id" => ["type"=>"integer", "label"=>"id", "read"=>$acc_all, "add"=>[], "edit"=>[] ],
+		"created_at" => ["type"=>"timestamp", "label"=>"Дата создания", "read"=>$acc_all, "add"=>[], "edit"=>[] ],
+		"updated_at" => ["type"=>"timestamp", "label"=>"Дата изменения", "read"=>$acc_all, "add"=>[], "edit"=>[] ],
+		"created_by_user" => ["type"=>"linkTable", "label"=>"Создано пользователем", "table"=>"users", "field"=>"login", "read"=>$acc_all, "add"=>[], "edit"=>[] ],
 
-		"parent_id" => ["type"=>"integer", "label"=>"parent_id", "read"=>["<TABLE>/view", 1], "add"=>[], "edit"=>[] ],
-		"sort" => ["type"=>"integer", "label"=>"sort", "read"=>["<TABLE>/view", 1], "add"=>[], "edit"=>[] ],
+		"user_id" => ["type"=>"linkTable", "label"=>"Пользователь", "table"=>"users", "field"=>"login", "read"=>$acc_all, "add"=>$acc_admin, "edit"=>$acc_admin ],
+		"app_access_id" => ["type"=>"linkTable", "label"=>"Разрешение", "table"=>"app_access_list", "field"=>"[name] ([slug])", "read"=>$acc_all, "add"=>$acc_admin, "edit"=>$acc_admin ],
+	],
 
-		"name" => ["type"=>"string", "label"=>"Наименование" ], 
-      ],
+	"seeds"=> [
+	],
 
-      "seeds"=> [
-      ]
-
-      ];//return
+      ];
     }//modelInfo
 
 }//class
