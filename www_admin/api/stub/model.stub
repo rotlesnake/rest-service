@@ -117,12 +117,22 @@ class <MODEL> extends \MapDapRest\Model
       ],
 
       "columns"=>[
-        "id" => ["type"=>"integer", "label"=>"id", "read"=>["<TABLE>/view", 1], "add"=>[], "edit"=>[] ],
-        "created_at" => ["type"=>"timestamp", "label"=>"Дата создания", "read"=>["<TABLE>/view", 1], "add"=>[], "edit"=>[] ],
-        "updated_at" => ["type"=>"timestamp", "label"=>"Дата изменения", "read"=>["<TABLE>/view", 1], "add"=>[], "edit"=>[] ],
-        "created_by_user" => ["type"=>"linkTable", "label"=>"Создано пользователем", "table"=>"users", "field"=>"login", "read"=>["<TABLE>/view", 1], "add"=>[], "edit"=>[] ],
+        "id" => ["type"=>"integer", "label"=>"id", "read"=>["<TABLE>/view", 1], "hidden"=>true, "add"=>[], "edit"=>[] ],
+        "created_at" => ["type"=>"timestamp", "label"=>"Дата создания", "hidden"=>true, "read"=>["<TABLE>/view", 1], "add"=>[], "edit"=>[] ],
+        "updated_at" => ["type"=>"timestamp", "label"=>"Дата изменения", "hidden"=>true, "read"=>["<TABLE>/view", 1], "add"=>[], "edit"=>[] ],
+        "created_by_user" => ["type"=>"linkTable", "label"=>"Создано пользователем", "table"=>"users", "field"=>"login", "hidden"=>true, "read"=>["<TABLE>/view", 1], "add"=>[], "edit"=>[] ],
 
         "name" => ["type"=>"string", "label"=>"Наименование" ], 
+        "role_id"=>["type"=>"linkTable", "label"=>"Роль", "table"=>"roles", "field"=>"description", "typeSelect"=>"combobox" ], 
+        "status"=>["type"=>"select", "label"=>"Статус", "typeSelect"=>"combobox", "items"=>["-1"=>"Заблокирован", "1"=>"Активный", ], "defaut"=>"1" ], 
+        "photo"=>["type"=>"images", "label"=>"Фотография", "hidden"=>true, "multiple"=>false  ], 
+        "sub_table"=>["type"=>"json", "label"=>"Список", "json"=>[
+                                                                  "columns"=>[
+                                                                      ["name"=>"code", "type"=>"string", "label"=>"Код", "dense"=>true, "hideDetails"=>true, "outlined"=>true],
+                                                                      ["name"=>"name", "type"=>"string", "label"=>"Наименование", "dense"=>true, "hideDetails"=>true, "outlined"=>true],
+                                                                  ],
+                                                              ], "multiple"=>true, "hidden"=>true, "form"=>"standart" ], 
+
       ],
 
       "seeds"=> [

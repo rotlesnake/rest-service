@@ -116,10 +116,10 @@ class <MODEL> extends \MapDapRest\Model
       ],
 
       "columns"=>[
-        "id" => ["type"=>"integer", "label"=>"id", "read"=>["<TABLE>/view", 1], "add"=>[], "edit"=>[] ],
-        "created_at" => ["type"=>"timestamp", "label"=>"Дата создания", "read"=>["<TABLE>/view", 1], "add"=>[], "edit"=>[] ],
-        "updated_at" => ["type"=>"timestamp", "label"=>"Дата изменения", "read"=>["<TABLE>/view", 1], "add"=>[], "edit"=>[] ],
-        "created_by_user" => ["type"=>"linkTable", "label"=>"Создано пользователем", "table"=>"users", "field"=>"login", "read"=>["<TABLE>/view", 1], "add"=>[], "edit"=>[] ],
+        "id" => ["type"=>"integer", "label"=>"id", "read"=>["<TABLE>/view", 1], "hidden"=>true, "add"=>[], "edit"=>[] ],
+        "created_at" => ["type"=>"timestamp", "label"=>"Дата создания", "hidden"=>true, "read"=>["<TABLE>/view", 1], "add"=>[], "edit"=>[] ],
+        "updated_at" => ["type"=>"timestamp", "label"=>"Дата изменения", "hidden"=>true, "read"=>["<TABLE>/view", 1], "add"=>[], "edit"=>[] ],
+        "created_by_user" => ["type"=>"linkTable", "label"=>"Создано пользователем", "table"=>"users", "field"=>"login", "hidden"=>true, "read"=>["<TABLE>/view", 1], "add"=>[], "edit"=>[] ],
 
 		"parent_id" => ["type"=>"integer", "label"=>"parent_id", "read"=>["<TABLE>/view", 1], "add"=>[], "edit"=>[] ],
 		"sort" => ["type"=>"integer", "label"=>"sort", "read"=>["<TABLE>/view", 1], "add"=>[], "edit"=>[] ],
