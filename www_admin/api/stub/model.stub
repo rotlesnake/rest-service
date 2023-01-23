@@ -87,56 +87,56 @@ class <MODEL> extends \MapDapRest\Model
       $acc_all = \MapDapRest\Utils::getAllRoles();
       
       return [
-      "table"=>"<TABLE>",
-      "primary_key"=>"id",
-      "category"=>"Система",
-      "name"=>"<LABEL>",
+        "table"=>"<TABLE>",
+        "primary_key"=>"id",
+        "category"=>"Система",
+        "name"=>"<LABEL>",
 
-      "sortBy"=>["id"],
-      "itemsPerPage"=>100,
-      "itemsPerPageVariants"=>[50,100,200,300,500,1000],
+        "sortBy"=>["id"],
+        "itemsPerPage"=>100,
+        "itemsPerPageVariants"=>[50,100,200,300,500,1000],
 
-      "acl"=> [
-        "<TABLE>/view" => "Просмотр",
-        "<TABLE>/add" => "Добавление",
-        "<TABLE>/edit" => "Изменение",
-        "<TABLE>/delete" => "Удаление",
-      ],
+        "acl"=> [
+          "<TABLE>/view" => "Просмотр",
+          "<TABLE>/add" => "Добавление",
+          "<TABLE>/edit" => "Изменение",
+          "<TABLE>/delete" => "Удаление",
+        ],
 
-      "read"=>["<TABLE>/view", 1],
-      "add"=>["<TABLE>/add", 1],
-      "edit"=>["<TABLE>/edit", 1],
-      "delete"=>["<TABLE>/delete"],
+        "read"=>["<TABLE>/view", 1],
+        "add"=>["<TABLE>/add", 1],
+        "edit"=>["<TABLE>/edit", 1],
+        "delete"=>["<TABLE>/delete"],
 
-      //"parentTables"=>[["table"=>"user", "field"=>"user_id"]],
-      //"childrenTables"=>[["table"=>"user_posts", "field"=>"user_id"]],
+        //"parentTables"=>[["table"=>"user", "field"=>"user_id"]],
+        //"childrenTables"=>[["table"=>"user_posts", "field"=>"user_id"]],
 	
-      "filter"=>[
+        "filter"=>[
           "created_at"=>["label"=>"Дата создания", "filterType"=>"like"],
           "created_by_user"=>["label"=>"Кто создал", "filterType"=>"="],
-      ],
+        ],
 
-      "columns"=>[
-        "id" => ["type"=>"integer", "label"=>"id", "read"=>["<TABLE>/view", 1], "hidden"=>true, "add"=>[], "edit"=>[] ],
-        "created_at" => ["type"=>"timestamp", "label"=>"Дата создания", "hidden"=>true, "read"=>["<TABLE>/view", 1], "add"=>[], "edit"=>[] ],
-        "updated_at" => ["type"=>"timestamp", "label"=>"Дата изменения", "hidden"=>true, "read"=>["<TABLE>/view", 1], "add"=>[], "edit"=>[] ],
-        "created_by_user" => ["type"=>"linkTable", "label"=>"Создано пользователем", "table"=>"users", "field"=>"login", "hidden"=>true, "read"=>["<TABLE>/view", 1], "add"=>[], "edit"=>[] ],
+        "columns"=>[
+          "id" => ["type"=>"integer", "label"=>"id", "read"=>["<TABLE>/view", 1], "hidden"=>true, "add"=>[], "edit"=>[] ],
+          "created_at" => ["type"=>"timestamp", "label"=>"Дата создания", "hidden"=>true, "read"=>["<TABLE>/view", 1], "add"=>[], "edit"=>[] ],
+          "updated_at" => ["type"=>"timestamp", "label"=>"Дата изменения", "hidden"=>true, "read"=>["<TABLE>/view", 1], "add"=>[], "edit"=>[] ],
+          "created_by_user" => ["type"=>"linkTable", "label"=>"Создано пользователем", "table"=>"users", "field"=>"login", "hidden"=>true, "read"=>["<TABLE>/view", 1], "add"=>[], "edit"=>[] ],
 
-        "name" => ["type"=>"string", "label"=>"Наименование" ], 
-        "role_id"=>["type"=>"linkTable", "label"=>"Роль", "table"=>"roles", "field"=>"description", "typeSelect"=>"combobox" ], 
-        "status"=>["type"=>"select", "label"=>"Статус", "typeSelect"=>"combobox", "items"=>["-1"=>"Заблокирован", "1"=>"Активный", ], "defaut"=>"1" ], 
-        "photo"=>["type"=>"images", "label"=>"Фотография", "hidden"=>true, "multiple"=>false  ], 
-        "sub_table"=>["type"=>"json", "label"=>"Список", "json"=>[
+          "name" => ["type"=>"string", "label"=>"Наименование" ], 
+          "role_id"=>["type"=>"linkTable", "label"=>"Роль", "table"=>"roles", "field"=>"description", "typeSelect"=>"combobox" ], 
+          "status"=>["type"=>"select", "label"=>"Статус", "typeSelect"=>"combobox", "items"=>["-1"=>"Заблокирован", "1"=>"Активный", ], "defaut"=>"1" ], 
+          "photo"=>["type"=>"images", "label"=>"Фотография", "hidden"=>true, "multiple"=>false  ], 
+          "sub_table"=>["type"=>"json", "label"=>"Список", "json"=>[
                                                                   "columns"=>[
                                                                       ["name"=>"code", "type"=>"string", "label"=>"Код", "dense"=>true, "hideDetails"=>true, "outlined"=>true],
                                                                       ["name"=>"name", "type"=>"string", "label"=>"Наименование", "dense"=>true, "hideDetails"=>true, "outlined"=>true],
                                                                   ],
-                                                              ], "multiple"=>true, "hidden"=>true, "form"=>"standart" ], 
+                                                            ], "multiple"=>true, "hidden"=>true, "form"=>"standart" ], 
 
-      ],
-
-      "seeds"=> [
-      ]
+        ],
+  
+        "seeds"=> [
+        ]
 
       ];//return
     }//modelInfo

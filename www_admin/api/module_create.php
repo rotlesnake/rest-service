@@ -16,7 +16,7 @@ $response = new \MapDapRest\Response();
        mkdir($dir."/Models/", 0777);
        mkdir($dir."/Events/", 0777);
        mkdir($dir."/Facades/", 0777);
-       //mkdir($dir."/Services/", 0777);
+       mkdir($dir."/Services/", 0777);
 
 
        $txt = file_get_contents(__DIR__."/stub/event_emits.stub");

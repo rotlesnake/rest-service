@@ -2,9 +2,9 @@
 namespace App\<MODULE>\Models;
 
 
-class <MODEL> extends \MapDapRest\Model
+class <MODEL>Properties extends \MapDapRest\Model
 {
-    protected $table = "<TABLE>";
+    protected $table = "<TABLE>_properties";
     protected $primaryKey = 'id';
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
@@ -12,6 +12,7 @@ class <MODEL> extends \MapDapRest\Model
     //Добавление записи----------------------
     //Перед добавлением
     public static function beforeAdd($model) {
+        $model->field_name = \MapDapRest\Utils::getSlug($model->field_name);
     }
     
     //После добавления
@@ -22,6 +23,7 @@ class <MODEL> extends \MapDapRest\Model
     //Изменение записи----------------------
     //Перед изменением
     public static function beforeEdit($model) {
+        $model->field_name = \MapDapRest\Utils::getSlug($model->field_name);
     }
 
     //После изменения
@@ -86,30 +88,24 @@ class <MODEL> extends \MapDapRest\Model
       $acc_all = \MapDapRest\Utils::getAllRoles();
       
       return [
-        "table"=>"<TABLE>",
+        "table"=>"<TABLE>_properties",
         "primary_key"=>"id",
         "category"=>"Система",
-        "name"=>"<LABEL>",
+        "name"=>"Свойства <LABEL>",
 
         "sortBy"=>["id"],
         "itemsPerPage"=>100,
         "itemsPerPageVariants"=>[50,100,200,300,500,1000],
 
-        "acl"=> [
-          "<TABLE>/view" => "Просмотр",
-          "<TABLE>/add" => "Добавление",
-          "<TABLE>/edit" => "Изменение",
-          "<TABLE>/delete" => "Удаление",
-        ],
-
-        "read"=>["<TABLE>/view", 1],
-        "add"=>["<TABLE>/add", 1],
-        "edit"=>["<TABLE>/edit", 1],
-        "delete"=>["<TABLE>/delete"],
-
-        "parentTables"=>[["table"=>"<TABLE>", "field"=>"parent_id"], ["table"=>"<TABLE>", "field"=>"sort"]],
+        "parentTables"=>[["table"=>"<TABLE>_properties", "field"=>"parent_id"], ["table"=>"<TABLE>_properties", "field"=>"sort"]],
         //"childrenTables"=>[["table"=>"user_posts", "field"=>"user_id"]],
 	
+
+        "read"=>$acc_all,
+        "add"=>$acc_all,
+        "edit"=>$acc_all,
+        "delete"=>[],
+
         "filter"=>[
             "created_at"=>["label"=>"Дата создания", "filterType"=>"like"],
             "created_by_user"=>["label"=>"Кто создал", "filterType"=>"="],
@@ -117,18 +113,20 @@ class <MODEL> extends \MapDapRest\Model
 
         "columns"=>[
           "id" => ["type"=>"integer", "label"=>"id", "read"=>["<TABLE>/view", 1], "hidden"=>true, "add"=>[], "edit"=>[] ],
-          "created_at" => ["type"=>"timestamp", "label"=>"Дата создания", "hidden"=>true, "read"=>["<TABLE>/view", 1], "add"=>[], "edit"=>[] ],
-          "updated_at" => ["type"=>"timestamp", "label"=>"Дата изменения", "hidden"=>true, "read"=>["<TABLE>/view", 1], "add"=>[], "edit"=>[] ],
-          "created_by_user" => ["type"=>"linkTable", "label"=>"Создано пользователем", "table"=>"users", "field"=>"login", "hidden"=>true, "read"=>["<TABLE>/view", 1], "add"=>[], "edit"=>[] ],
+          "created_at" => ["type"=>"timestamp", "label"=>"Дата создания", "hidden"=>true, "read"=>$acc_all, "add"=>[], "edit"=>[] ],
+          "updated_at" => ["type"=>"timestamp", "label"=>"Дата изменения", "hidden"=>true, "read"=>$acc_all, "add"=>[], "edit"=>[] ],
+          "created_by_user" => ["type"=>"linkTable", "label"=>"Создано пользователем", "table"=>"users", "field"=>"login", "hidden"=>true, "read"=>$acc_all, "add"=>[], "edit"=>[] ],
 
-          "parent_id" => ["type"=>"integer", "label"=>"parent_id", "read"=>["<TABLE>/view", 1], "add"=>[], "edit"=>[] ],
-          "sort" => ["type"=>"integer", "label"=>"sort", "read"=>["<TABLE>/view", 1], "add"=>[], "edit"=>[] ],
+          "parent_id" => ["type"=>"integer", "label"=>"parent_id", "read"=>$acc_all, "add"=>[], "edit"=>[] ],
+          "sort" => ["type"=>"integer", "label"=>"sort", "read"=>$acc_all, "add"=>[], "edit"=>[] ],
 
           "type"=>["type"=>"select", "label"=>"Тип элемента", "items"=>["1"=>"Папка", "2"=>"Элемент", ], "hidden"=>true ], 
 
-          "name" => ["type"=>"string", "label"=>"Наименование" ], 
-          "fold"=>["type"=>"string", "label"=>"Свойство для папки", "vif"=>"[type]==1" ], 
-          "elem"=>["type"=>"string", "label"=>"Свойство для элемента", "vif"=>"[type]==2" ], 
+          "field_name" => ["type"=>"string", "label"=>"Код поля", "vif"=>"[type]==2" ], 
+          "field_label" => ["type"=>"string", "label"=>"Наименование" ], 
+          "field_slabel" => ["type"=>"string", "label"=>"Короткое наименование", "vif"=>"[type]==2" ], 
+          "field_type"=>["type"=>"selectText", "label"=>"Тип данных",       "vif"=>"[type]==2", "items"=>\MapDapRest\Utils::getAllColumnItems(),  ], 
+          "field_options" => ["type"=>"json", "label"=>"Настройки поля", "vif"=>"[type]==2", "hidden"=>true ], 
         ],
 
         "seeds"=> [

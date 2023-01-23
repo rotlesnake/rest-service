@@ -46,10 +46,9 @@ try {
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="//cdn.jsdelivr.net/npm/sortablejs@1.8.4/Sortable.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/Vue.Draggable/2.20.0/vuedraggable.umd.min.js"></script>
-    <script src="js/dbquery.js"></script>
 
-    <link href="https://yy7.ru/VUE2_VENDORS/lib/swal/sweetalert2.min.css" rel="stylesheet">
-    <script src="https://yy7.ru/VUE2_VENDORS/lib/swal/sweetalert2.min.js"></script>
+    <link href="js/sweetalert2.min.css" rel="stylesheet">
+    <script src="js/sweetalert2.min.js"></script>
 </head>
 <body>
 

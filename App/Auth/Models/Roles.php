@@ -12,7 +12,7 @@ class Roles extends \MapDapRest\Model
     //Добавление записи----------------------
     //Перед добавлением
     public static function beforeAdd($model) {
-        $model->name = \MapDapRest\Utils::getSlug($model->name);
+        $model->slug = \MapDapRest\Utils::getSlug($model->name);
     }
     
     //После добавления
@@ -23,7 +23,7 @@ class Roles extends \MapDapRest\Model
     //Изменение записи----------------------
     //Перед изменением
     public static function beforeEdit($model) {
-        $model->name = \MapDapRest\Utils::getSlug($model->name);
+        $model->slug = \MapDapRest\Utils::getSlug($model->name);
     }
 
     //После изменения
@@ -115,6 +115,7 @@ class Roles extends \MapDapRest\Model
                 "updated_at" => ["type"=>"timestamp", "label"=>"Дата изменения", "hidden"=>true, "read"=>$acc_all, "add"=>[], "edit"=>[] ],
                 "created_by_user" => ["type"=>"linkTable", "label"=>"Создано пользователем", "table"=>"users", "field"=>"login", "hidden"=>true, "read"=>$acc_all, "add"=>[], "edit"=>[] ],
 
+                "slug" => ["type"=>"string", "label"=>"Код",  "read"=>$acc_all, "add"=>$acc_admin, "edit"=>$acc_admin ], 
                 "name" => ["type"=>"string", "label"=>"Наименование роли",  "read"=>$acc_all, "add"=>$acc_admin, "edit"=>$acc_admin ], 
                 "description" => ["type"=>"string", "label"=>"Описание роли",  "read"=>$acc_all, "add"=>$acc_admin, "edit"=>$acc_admin ], 
 	],
@@ -122,31 +123,36 @@ class Roles extends \MapDapRest\Model
 	             [
                       'id'    => 1,
                       'created_by_user'    => 1,
-                      'name'    => 'admin',
+                      'slug'    => 'admin',
+                      'name'    => 'Администратор системы',
                       'description'    => 'Администратор системы',
                      ],
 	             [
                       'id'    => 2,
                       'created_by_user'    => 1,
-                      'name'    => 'support',
+                      'slug'    => 'support',
+                      'name'    => 'Помошник администратора',
                       'description'    => 'Помошник администратора',
                      ],
 	             [
                       'id'    => 3,
                       'created_by_user'    => 1,
-                      'name'    => 'dir',
+                      'slug'    => 'dir',
+                      'name'    => 'Директор',
                       'description'    => 'Директор',
                      ],
 	             [
                       'id'    => 4,
                       'created_by_user'    => 1,
-                      'name'    => 'buh',
+                      'slug'    => 'buh',
+                      'name'    => 'Бухгалтер',
                       'description'    => 'Бухгалтер',
                      ],
 	             [
                       'id'    => 5,
                       'created_by_user'    => 1,
-                      'name'    => 'user',
+                      'slug'    => 'user',
+                      'name'    => 'Пользователь',
                       'description'    => 'Пользователь',
                      ],
         ]

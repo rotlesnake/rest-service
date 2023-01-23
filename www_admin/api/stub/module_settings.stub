@@ -4,6 +4,8 @@ namespace App\<MODULE>;
 
 class Settings {
 
-    public static $description = "";
+    public static $description = "Модуль <MODULE>";
+    public static $acl = [
+                         ];
 
 }

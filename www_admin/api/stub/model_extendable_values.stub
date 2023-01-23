@@ -2,9 +2,9 @@
 namespace App\<MODULE>\Models;
 
 
-class <MODEL> extends \MapDapRest\Model
+class <MODEL>PropertyValues extends \MapDapRest\Model
 {
-    protected $table = "<TABLE>";
+    protected $table = "<TABLE>_property_values";
     protected $primaryKey = 'id';
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
@@ -12,6 +12,7 @@ class <MODEL> extends \MapDapRest\Model
     //Добавление записи----------------------
     //Перед добавлением
     public static function beforeAdd($model) {
+        $model->field_name = \MapDapRest\Utils::getSlug($model->field_name);
     }
     
     //После добавления
@@ -22,6 +23,7 @@ class <MODEL> extends \MapDapRest\Model
     //Изменение записи----------------------
     //Перед изменением
     public static function beforeEdit($model) {
+        $model->field_name = \MapDapRest\Utils::getSlug($model->field_name);
     }
 
     //После изменения
@@ -86,29 +88,21 @@ class <MODEL> extends \MapDapRest\Model
       $acc_all = \MapDapRest\Utils::getAllRoles();
       
       return [
-        "table"=>"<TABLE>",
+        "table"=>"<TABLE>_property_values",
         "primary_key"=>"id",
         "category"=>"Система",
-        "name"=>"<LABEL>",
+        "name"=>"Данные для <LABEL>",
 
         "sortBy"=>["id"],
         "itemsPerPage"=>100,
         "itemsPerPageVariants"=>[50,100,200,300,500,1000],
 
-        "acl"=> [
-          "<TABLE>/view" => "Просмотр",
-          "<TABLE>/add" => "Добавление",
-          "<TABLE>/edit" => "Изменение",
-          "<TABLE>/delete" => "Удаление",
-        ],
+        "read"=>$acc_all,
+        "add"=>$acc_all,
+        "edit"=>$acc_all,
+        "delete"=>[],
 
-        "read"=>["<TABLE>/view", 1],
-        "add"=>["<TABLE>/add", 1],
-        "edit"=>["<TABLE>/edit", 1],
-        "delete"=>["<TABLE>/delete"],
-
-        "parentTables"=>[["table"=>"<TABLE>", "field"=>"parent_id"], ["table"=>"<TABLE>", "field"=>"sort"]],
-        //"childrenTables"=>[["table"=>"user_posts", "field"=>"user_id"]],
+        "parentTables"=>[["table"=>"<TABLE>", "field"=>"object_id"]],
 	
         "filter"=>[
             "created_at"=>["label"=>"Дата создания", "filterType"=>"like"],
@@ -117,18 +111,14 @@ class <MODEL> extends \MapDapRest\Model
 
         "columns"=>[
           "id" => ["type"=>"integer", "label"=>"id", "read"=>["<TABLE>/view", 1], "hidden"=>true, "add"=>[], "edit"=>[] ],
-          "created_at" => ["type"=>"timestamp", "label"=>"Дата создания", "hidden"=>true, "read"=>["<TABLE>/view", 1], "add"=>[], "edit"=>[] ],
-          "updated_at" => ["type"=>"timestamp", "label"=>"Дата изменения", "hidden"=>true, "read"=>["<TABLE>/view", 1], "add"=>[], "edit"=>[] ],
-          "created_by_user" => ["type"=>"linkTable", "label"=>"Создано пользователем", "table"=>"users", "field"=>"login", "hidden"=>true, "read"=>["<TABLE>/view", 1], "add"=>[], "edit"=>[] ],
+          "created_at" => ["type"=>"timestamp", "label"=>"Дата создания", "hidden"=>true, "read"=>$acc_all, "add"=>[], "edit"=>[] ],
+          "updated_at" => ["type"=>"timestamp", "label"=>"Дата изменения", "hidden"=>true, "read"=>$acc_all, "add"=>[], "edit"=>[] ],
+          "created_by_user" => ["type"=>"linkTable", "label"=>"Создано пользователем", "table"=>"users", "field"=>"login", "hidden"=>true, "read"=>$acc_all, "add"=>[], "edit"=>[] ],
 
-          "parent_id" => ["type"=>"integer", "label"=>"parent_id", "read"=>["<TABLE>/view", 1], "add"=>[], "edit"=>[] ],
-          "sort" => ["type"=>"integer", "label"=>"sort", "read"=>["<TABLE>/view", 1], "add"=>[], "edit"=>[] ],
+          "object_id"=>["type"=>"linkTable", "label"=>"Базовый элемент", "read"=>$acc_all, "add"=>[], "edit"=>[], "table"=>"<TABLE>", "field"=>"name", ], 
 
-          "type"=>["type"=>"select", "label"=>"Тип элемента", "items"=>["1"=>"Папка", "2"=>"Элемент", ], "hidden"=>true ], 
-
-          "name" => ["type"=>"string", "label"=>"Наименование" ], 
-          "fold"=>["type"=>"string", "label"=>"Свойство для папки", "vif"=>"[type]==1" ], 
-          "elem"=>["type"=>"string", "label"=>"Свойство для элемента", "vif"=>"[type]==2" ], 
+          "property" => ["type"=>"linkTable", "label"=>"Свойство", "table"=>"<TABLE>_properties", "field"=>"field_name", "read"=>$acc_all, "add"=>[], "edit"=>[] ],
+          "value" => ["type"=>"text", "label"=>"Значение", "read"=>$acc_all, "add"=>[], "edit"=>[] ], 
         ],
 
         "seeds"=> [

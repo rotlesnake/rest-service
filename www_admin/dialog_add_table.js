@@ -17,7 +17,8 @@ template:`
                     <v-select     v-model="module" :items="modules" label="Модуль" outlined :rules="[v=> v && v.length>0 || 'Заполните поле']"></v-select>
                     <v-text-field v-model="model" label="Наименование модели и таблицы (en)" outlined :rules="[v=> v && v.length>0 || 'Заполните поле']"></v-text-field>
                     <v-text-field v-model="label" label="Описание (ru)" outlined :rules="[v=> v && v.length>0 || 'Заполните поле']"></v-text-field>
-		    <v-checkbox   v-model="tree" label="Иерархическая таблица (в виде дерева)"></v-checkbox>
+
+                    <v-select     v-model="table_type" :items="table_types" label="Тип таблицы" outlined ></v-select>
                 </v-form>
             </v-card-text>
 
@@ -50,7 +51,12 @@ template:`
             module: '',
             model:'',
             label:'',
-            tree: false,
+            table_type: "standart",
+            table_types: [
+                {value: "standart", text: "Стандартная (простая таблица)"},
+                {value: "tree", text: "Иерархическая таблица (в виде дерева)"},
+                {value: "extendable", text: "Таблица с динамическими свойствами"},
+            ],
         };
 	},
 	
@@ -65,7 +71,7 @@ template:`
             if (!this.form_valid) return;
 
             Swal.showLoading();
-            axios({method:"POST", url:"api/database_add_model.php", data:{module:this.module, model:this.model, label:this.label, tree:this.tree} }).then(response=>{
+            axios({method:"POST", url:"api/database_add_model.php", data:{module:this.module, model:this.model, label:this.label, table_type:this.table_type } }).then(response=>{
                 Swal.close();
                 if (response.error>0) {
                     this.$swal.toast("Ошибка: "+response.message, "error", "center-center", 3000);
