@@ -118,6 +118,7 @@ class <MODEL>PropertyValues extends \MapDapRest\Model
           "object_id"=>["type"=>"linkTable", "label"=>"Базовый элемент", "read"=>$acc_all, "add"=>[], "edit"=>[], "table"=>"<TABLE>", "field"=>"name", ], 
 
           "property" => ["type"=>"linkTable", "label"=>"Свойство", "table"=>"<TABLE>_properties", "field"=>"field_name", "read"=>$acc_all, "add"=>[], "edit"=>[] ],
+          "name" => ["type"=>"string", "label"=>"Код поля", "read"=>$acc_all, "add"=>[], "edit"=>[] ], 
           "value" => ["type"=>"text", "label"=>"Значение", "read"=>$acc_all, "add"=>[], "edit"=>[] ], 
         ],
 
