@@ -126,7 +126,13 @@ class <MODEL>Properties extends \MapDapRest\Model
           "field_label" => ["type"=>"string", "label"=>"Наименование" ], 
           "field_slabel" => ["type"=>"string", "label"=>"Короткое наименование", "vif"=>"[type]==2" ], 
           "field_type"=>["type"=>"selectText", "label"=>"Тип данных",       "vif"=>"[type]==2", "items"=>\MapDapRest\Utils::getAllColumnItems(),  ], 
-          "field_options" => ["type"=>"json", "label"=>"Настройки поля", "vif"=>"[type]==2", "hidden"=>true ], 
+          "field_options" => ["type"=>"json", "label"=>"Настройки поля", "vif"=>"[type]==2", "hidden"=>true, "multiple"=>true,
+                                      "json"=>[
+                                                 "columns"=>[
+                                                       ["name"=>"key", "label"=>"Ключ", "type"=>"string", "dense"=>true, "outlined"=>true, "hide-details"=>true],
+                                                       ["name"=>"value", "label"=>"Значение", "type"=>"text", "dense"=>true, "outlined"=>true, "hide-details"=>true],
+                                                 ],
+                                               ], ], 
         ],
 
         "seeds"=> [
