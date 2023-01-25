@@ -111,7 +111,7 @@ class Menus extends \MapDapRest\Model
                    "updated_at"=>["type"=>"timestamp", "label"=>"Дата изменения", "read"=>$acc_all, "hidden"=>true, "add"=>[], "edit"=>[] ], 
                    "created_by_user"=>["type"=>"linkTable", "label"=>"Создано пользователем", "table"=>"users", "field"=>"login", "hidden"=>true, "read"=>$acc_all, "add"=>[], "edit"=>[] ], 
 
-                   "type"=>["type"=>"select", "label"=>"Тип меню", "typeSelect"=>"combobox", "items"=>["1"=>"Основное", "2"=>"Дополнительное", ], "defaut"=>"1", "read"=>$acc_all, "add"=>$acc_admin, "edit"=>$acc_admin ], 
+                   "type"=>["type"=>"select", "label"=>"Тип меню", "typeSelect"=>"combobox", "items"=>["1"=>"Основное", "2"=>"Дополнительное", ], "default"=>"1", "read"=>$acc_all, "add"=>$acc_admin, "edit"=>$acc_admin ], 
                    "parent_id"=>["type"=>"linkTable", "label"=>"Родительский пункт", "table"=>"menus", "field"=>"name", "read"=>$acc_all, "add"=>$acc_admin, "edit"=>$acc_admin ], 
                    "sort"=>["type"=>"integer", "label"=>"Сортировка", "read"=>$acc_all, "add"=>$acc_admin, "edit"=>$acc_admin ], 
 
