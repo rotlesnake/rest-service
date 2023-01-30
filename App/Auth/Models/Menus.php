@@ -119,6 +119,7 @@ class Menus extends \MapDapRest\Model
                    "icon"=>["type"=>"string", "label"=>"Иконка", "read"=>$acc_all, "add"=>$acc_admin, "edit"=>$acc_admin], 
                    "url"=>["type"=>"string", "label"=>"URL ссылка", "read"=>$acc_all, "add"=>$acc_admin, "edit"=>$acc_admin], 
                    "roles"=>["type"=>"linkTable", "label"=>"Каким ролям видна", "table"=>"roles", "field"=>"name", "multiple"=>true, "read"=>$acc_all, "add"=>$acc_admin, "edit"=>$acc_admin ], 
+		           "app_access"=>["type"=>"linkTable", "label"=>"Разрешения", "table"=>"app_access_list", "field"=>"[name] ([slug])", "typeSelect"=>"tree", "multiple"=>true, "read"=>$acc_all, "add"=>$acc_admin, "edit"=>$acc_admin ],
                    ], 
            
              ];

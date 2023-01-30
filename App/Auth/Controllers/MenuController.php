@@ -7,6 +7,7 @@ use App\Auth\Models\Menus;
 class MenuController extends \MapDapRest\Controller
 {
 
+    public $user_acl_ids = [];
 
     /** Получить меню <br>
        @param string $type  <i>- тип меню</i>
@@ -14,6 +15,7 @@ class MenuController extends \MapDapRest\Controller
     **/
     public function getAction($request, $response, $params) {
         $me = $this->APP->auth->getFields();
+        $this->user_acl_ids = \MapDapRest\Utils::getUserAcl($this->APP->auth->user->id, "id");
         $json_response = ["items"=>[]];
 
         $menu = $this->getMenuTree($request->getParam("type"), 0);
@@ -39,6 +41,7 @@ class MenuController extends \MapDapRest\Controller
     **/
     public function setAction($request, $response, $params) {
         $me = $this->APP->auth->getFields();
+        $this->user_acl_ids = \MapDapRest\Utils::getUserAcl($this->APP->auth->user->id, "id");
 
         $this->setMenuTree($request->getParam("type"), $request->getParam("menu"), 0,0);
 
@@ -67,6 +70,10 @@ class MenuController extends \MapDapRest\Controller
         $items = Menus::where("type", $menu_type)->where("parent_id", $parent_id)->orderBy("sort")->get();
         foreach ($items as $item) {
              if (!$this->APP->auth->hasRoles($item->roles)) {continue;}
+             if (isset($item->app_access) && strlen($item->app_access)>0) {
+                 $reqAccess = array_map('intval', explode(',', $item->app_access));
+                 if (!\MapDapRest\Utils::inArray($reqAccess, $this->user_acl_ids)) continue;
+             }
              $item_tree = $item->getConvertedRow();
              $item_tree["server_id"] = $item_tree["id"];
              $item_tree["children"] = $this->getMenuTree($menu_type, $item->id);
