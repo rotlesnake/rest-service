@@ -70,7 +70,7 @@ class MenuController extends \MapDapRest\Controller
         $items = Menus::where("type", $menu_type)->where("parent_id", $parent_id)->orderBy("sort")->get();
         foreach ($items as $item) {
              if (!$this->APP->auth->hasRoles($item->roles)) {continue;}
-             if (isset($item->app_access) && strlen($item->app_access)>0) {
+             if (isset($item->app_access) && $item->app_access != "0" && strlen($item->app_access)>0) {
                  $reqAccess = array_map('intval', explode(',', $item->app_access));
                  if (!\MapDapRest\Utils::inArray($reqAccess, $this->user_acl_ids)) continue;
              }
