@@ -136,7 +136,7 @@ class Users extends \MapDapRest\Model
            "filter"=>[
                    "created_by_user"=>["label"=>"Кто создал", "filterType"=>"=" ], 
                    "login"=>["label"=>"Логин", "filterType"=>"like" ], 
-                   ], 
+           ], 
            "columns"=>[
                    "id"=>["type"=>"integer", "label"=>"id", "read"=>$acc_all, "add"=>[], "edit"=>[] ], 
                    "created_at"=>["type"=>"timestamp", "label"=>"Дата создания", "read"=>$acc_all, "hidden"=>true, "add"=>[], "edit"=>[] ], 
@@ -149,14 +149,9 @@ class Users extends \MapDapRest\Model
                    "status"=>["type"=>"select", "label"=>"Статус", "typeSelect"=>"combobox", "items"=>["-1"=>"Заблокирован", "1"=>"Активный", ], "default"=>"1", "read"=>$acc_all, "add"=>$acc_admin, "edit"=>$acc_admin ], 
                    "blocking_comment"=>["type"=>"string", "label"=>"Причина блокировки", "rules"=>"[v=>v && v.length > 3 || 'Обязательное поле']", "vif"=>"[status] < 0", "read"=>$acc_all, "add"=>$acc_admin, "edit"=>$acc_admin, "visible"=>true], 
                    "photo"=>["type"=>"images", "label"=>"Фотография", "multiple"=>false, "read"=>$acc_all, "add"=>$acc_all, "edit"=>$acc_all, "name"=>"photo", ], 
-
-                   "token"=>["type"=>"string", "label"=>"Токен", "index"=>"index", "width"=>200,         "read"=>$acc_all, "add"=>[], "edit"=>[], "name"=>"token", "hidden"=>true, "masked"=>false, ], 
-                   "token_expire"=>["type"=>"dateTime", "label"=>"Срок токена", "width"=>200,            "read"=>[], "add"=>[], "edit"=>[], "name"=>"token_expire", ], 
-                   "refresh_token"=>["type"=>"string", "label"=>"Токен", "index"=>"index", "width"=>200, "read"=>[], "add"=>[], "edit"=>[], "name"=>"refresh_token", ], 
-                   "refresh_token_expire"=>["type"=>"dateTime", "label"=>"Срок токена", "width"=>200,    "read"=>[], "add"=>[], "edit"=>[], "name"=>"refresh_token_expire", ], 
-                   ], 
+           ], 
            
-             ];
+      ];
     }
 
 }//class
