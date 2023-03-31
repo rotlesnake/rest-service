@@ -143,6 +143,7 @@ try {
                        {url:'/home', icon:'mdi-database-sync', label:'Миграция'},
                        {url:'/modules', icon:'mdi-puzzle', label:'Модули'},
                        {url:'/database', icon:'mdi-table-large', label:'База данных'},
+                       {url:'/export', icon:'mdi-table', label:'Экспорт базы'},
                      ],
         }},
        
